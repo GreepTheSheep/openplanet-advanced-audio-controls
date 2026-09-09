@@ -6,7 +6,7 @@ namespace SMTCLib {
     void LoadLibrary() {
         try {
             if (g_smtcLib is null)
-                @g_smtcLib = Import::GetZippedLibrary("lib/AdvancedAudioControls.SMTC/bin/Release/net10.0-windows10.0.19041.0/win-x64/publish/AdvancedAudioControls.SMTC.dll");
+                @g_smtcLib = Import::GetZippedLibrary("lib/AdvancedAudioControls.SMTC.dll");
         } catch {
             error("Error while loading SMTC Library: " + getExceptionInfo());
         }
