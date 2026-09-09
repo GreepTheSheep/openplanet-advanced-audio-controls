@@ -1,0 +1,67 @@
+name: Build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-dll:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Setup MSVC (C++ workload for NativeAOT)
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Restore
+        run: dotnet restore lib/AdvancedAudioControls.SMTC/AdvancedAudioControls.SMTC.csproj
+
+      - name: Publish (NativeAOT)
+        run: dotnet publish lib/AdvancedAudioControls.SMTC/AdvancedAudioControls.SMTC.csproj -c Release -r win-x64 -f net10.0-windows10.0.19041.0
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: AdvancedAudioControls.SMTC
+          path: lib/AdvancedAudioControls.SMTC/bin/Release/net10.0-windows10.0.19041.0/win-x64/publish/AdvancedAudioControls.SMTC.dll
+          archive: false
+
+  build-op:
+    needs: build-dll
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Recreate lib directory
+        run: rm -drf lib/ && mkdir lib/
+
+      - name: Download compiled SMTC library
+        uses: actions/download-artifact@v8
+        with:
+          name: AdvancedAudioControls.SMTC
+          path: lib/
+
+      - name: Read info.toml
+        id: toml
+        uses: cssnr/toml-action@v2
+        with:
+          file: info.toml
+
+      - name: Build base .op
+        run: |
+          name="${{ fromJSON(steps.toml.outputs.data).script.module }}"
+          [ -f "$name.op" ] && rm -f "$name.op"
+          zip -r "$name.op" info.toml src lib
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ fromJSON(steps.toml.outputs.data).script.module }}
+          path: ${{ fromJSON(steps.toml.outputs.data).script.module }}.op
+          archive: false

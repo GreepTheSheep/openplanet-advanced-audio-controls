@@ -1,0 +1,1 @@
+const string PLUGIN_NAME = "Advanced Audio Controls";

@@ -1,0 +1,9 @@
+[meta]
+name = "Advanced Audio Controls"
+author = "Greep"
+category = "Audio"
+
+version = "0.1"
+
+[script]
+module = "AdvancedAudioControls"
