@@ -22,7 +22,9 @@ jobs:
         run: dotnet restore lib/AdvancedAudioControls.SMTC/AdvancedAudioControls.SMTC.csproj
 
       - name: Publish (NativeAOT)
-        run: dotnet publish lib/AdvancedAudioControls.SMTC/AdvancedAudioControls.SMTC.csproj -c Release -r win-x64 -f net10.0-windows10.0.19041.0 -o lib
+        run: |
+          dotnet publish lib/AdvancedAudioControls.SMTC/AdvancedAudioControls.SMTC.csproj -c Release -r win-x64 -f net10.0-windows10.0.19041.0 -o publish
+          cp publish/AdvancedAudioControls.SMTC.dll lib/AdvancedAudioControls.SMTC.dll
 
       - name: Upload artifact
         uses: actions/upload-artifact@v7
