@@ -39,11 +39,19 @@ namespace Game {
             uint tmpEnvironmentSourcesPlaying = 0;
 
             auto audioPort = GetApp().AudioPort;
+            auto rootMap = GetApp().RootMap;
             for (uint i = 0; i < audioPort.Sources.Length; i++) {
                 auto source = audioPort.Sources[i];
 
                 bool isPlaying = source.IsPlaying && source.Implementation.IsActuallyPlaying;
                 if (isPlaying) tmpAllSourcesPlaying++;
+
+                string fileName = "";
+                CSystemFidFile@ file;
+                if (source.PlugSound.PlugFile !is null)
+                    @file = GetFidFromNod(source.PlugSound.PlugFile);
+                if (file !is null)
+                    fileName = file.FileName;
 
                 switch (source.BalanceGroup) {
                     case EAudioBalanceGroup::Auto:
@@ -73,8 +81,30 @@ namespace Game {
                         tmpAmbianceSourcesIndexes.InsertLast(i);
                         if (isPlaying) tmpAmbianceSourcesPlaying++;
 
-                        // source.PlugSound.Volumed_uB = AdvancedAudioControlsSettings::AmbianceVolume;
-                        // TODO: Check names of ambiance sounds
+                        if (source.PlugSound.IdName == "CommonCarWind") {
+                            // Wind sound when speeding
+                            source.PlugSound.VolumedB = CalculateNewDb(0, AdvancedAudioControlsSettings::AmbianceVolumePercent);
+                        } else if (source.PlugSound.IdName == "Unassigned") {
+                            if (fileName == "AmbStadium.ogg") {
+                                // Stadium ambiance sound, default -11dB
+                                source.PlugSound.VolumedB = CalculateNewDb(-11, AdvancedAudioControlsSettings::AmbianceVolumePercent);
+                            } else if (fileName == "Amb.ogg" || fileName == "AmbWind.ogg") {
+                                // Other ambiances sound, default depends of the vista
+                                if (rootMap !is null) {
+                                    if (rootMap.CollectionName == "RedIsland")
+                                        source.PlugSound.VolumedB = CalculateNewDb(-13.97, AdvancedAudioControlsSettings::AmbianceVolumePercent);
+                                    else if (rootMap.CollectionName == "GreenCoast")
+                                        source.PlugSound.VolumedB = CalculateNewDb(-22, AdvancedAudioControlsSettings::AmbianceVolumePercent);
+                                    else if (rootMap.CollectionName == "BlueBay")
+                                        source.PlugSound.VolumedB = CalculateNewDb(-12, AdvancedAudioControlsSettings::AmbianceVolumePercent);
+                                    else if (rootMap.CollectionName == "WhiteShore")
+                                        source.PlugSound.VolumedB = CalculateNewDb(-13.97, AdvancedAudioControlsSettings::AmbianceVolumePercent);
+                                    else
+                                        source.PlugSound.VolumedB = CalculateNewDb(-11, AdvancedAudioControlsSettings::AmbianceVolumePercent);
+                                    // default for other (upcoming?) vistas is set to -11dB, personal choice
+                                } else source.PlugSound.VolumedB = CalculateNewDb(-11, AdvancedAudioControlsSettings::AmbianceVolumePercent);
+                            }
+                        }
                         break;
                     case EAudioBalanceGroup::Player:
                         tmpPlayerSourcesIndexes.InsertLast(i);
@@ -111,9 +141,11 @@ namespace Game {
                         // TODO: Turbo, Reactor and other effects
 
                         if (source.PlugSound.IdName == "Unassigned") {
-                            // Unassigned sounds = sounds from file
+                            // Unassigned sounds = mostly sounds from file
 
-                            // TODO: Gears
+                            if (fileName == "GearChange1.wav") {
+                                source.PlugSound.VolumedB = CalculateNewDb(-10.45, AdvancedAudioControlsSettings::GearVolumePercent);
+                            }
                         }
 
                         break;
@@ -136,6 +168,12 @@ namespace Game {
                     case EAudioBalanceGroup::GameUI:
                         tmpGameUISourcesIndexes.InsertLast(i);
                         if (isPlaying) tmpGameUISourcesPlaying++;
+
+                        if (fileName == "Race3.wav") {
+                            source.PlugSound.VolumedB = CalculateNewDb(-8.5, AdvancedAudioControlsSettings::GameUIVolumePercent);
+                        } else if (fileName == "RaceGo.wav") {
+                            source.PlugSound.VolumedB = CalculateNewDb(-4.5, AdvancedAudioControlsSettings::GameUIVolumePercent);
+                        }
                         break;
                     case EAudioBalanceGroup::Custom1:
                         tmpCustom1SourcesIndexes.InsertLast(i);

@@ -20,17 +20,23 @@ namespace AdvancedAudioControlsSettings {
     [Setting name="Menus UI Volume in dB" category="Game" min="-50" max="12" step="0.1" drag="true"]
     float MenuUIVolume = 0;
 
-    [Setting name="Engine Volume in %" category="Game" min="0" max="100" step="0.1" drag="true"]
+    [Setting name="Game UI Volume in %" category="Game" min="0" max="200" step="0.1" drag="true"]
+    float GameUIVolumePercent = 100;
+
+    [Setting name="Engine Volume in %" category="Game" min="0" max="200" step="0.1" drag="true"]
     float EngineVolumePercent = 100;
 
-    [Setting name="Wheels Volume in %" category="Game" min="0" max="100" step="0.1" drag="true"]
+    [Setting name="Wheels Volume in %" category="Game" min="0" max="200" step="0.1" drag="true"]
     float WheelsVolumePercent = 100;
 
-    [Setting name="Brake Volume in %" category="Game" min="0" max="100" step="0.1" drag="true"]
+    [Setting name="Brake Volume in %" category="Game" min="0" max="200" step="0.1" drag="true"]
     float BrakeVolumePercent = 100;
 
-    [Setting name="Ambiance Volume in dB" category="Game" min="-50" max="12" step="0.1" drag="true"]
-    float AmbianceVolume = -12;
+    [Setting name="Gear change click Volume in %" category="Game" min="0" max="200" step="0.1" drag="true"]
+    float GearVolumePercent = 100;
+
+    [Setting name="Ambiance Volume in %" category="Game" min="0" max="200" step="0.1" drag="true"]
+    float AmbianceVolumePercent = 100;
 }
 
 [SettingsTab name="SMTC Library Debug" icon="FileCodeO"]
