@@ -11,37 +11,38 @@ bool IsUsingWindows() {
 }
 
 void Main() {
+    startnew(CoroutineFunc(Game::FilterAndPatchAudioSourcesAsyncLoop));
+
     if (!IsUsingWindows()) {
         UI::ShowNotification(
             Icons::Kenney::ExclamationCircle + " " + PLUGIN_NAME + " - Warning",
-            "You are not using Windows right now. The plugin will stop running",
+            "You are not using Windows right now. External media controls are not possible.",
             UI::HSV(0.11, 1.0, 1.0), 5000
         );
         return;
-    }
-
-    startnew(CoroutineFunc(Game::FilterAndPatchAudioSourcesAsyncLoop));
-
-    SMTCLib::LoadLibrary();
-
-    if (SMTCLib::Ping()) {
-        trace("SMTC library loaded and responding");
-        startnew(CoroutineFunc(SMTCLib::FetchCurrentMediaAsyncLoop));
     } else {
-        warn("SMTC library failed to respond");
+        SMTCLib::LoadLibrary();
+
+        if (SMTCLib::Ping()) {
+            trace("SMTC library loaded and responding");
+            startnew(CoroutineFunc(SMTCLib::FetchCurrentMediaAsyncLoop));
+        } else {
+            warn("SMTC library failed to respond");
+        }
     }
 }
 
 void RenderMenuMain()
 {
-    if (!IsUsingWindows()) return;
     if (UI::BeginMenu(Icons::VolumeUp + " " + PLUGIN_NAME + "###AdvancedAudioControlsMenu")) {
-        if (SMTCLib::g_currentMedia !is null) {
-            AdvancedAudioControlsUI::RenderSMTCControlsMenuMain();
-        } else {
-            UI::TextDisabled("No media loaded");
+        if (IsUsingWindows()) {
+            if (SMTCLib::g_currentMedia !is null) {
+                AdvancedAudioControlsUI::RenderSMTCControlsMenuMain();
+            } else {
+                UI::TextDisabled("No media loaded");
+            }
+            UI::Separator();
         }
-        UI::Separator();
 
         UI::AlignTextToFramePadding();
         AdvancedAudioControlsSettings::MusicVolume = UI::SliderFloat((AdvancedAudioControlsSettings::MusicVolume == -50 ? Icons::Kenney::MusicOff : Icons::Kenney::MusicOn) + " Music###MenuMainMusicVolumeSlider", AdvancedAudioControlsSettings::MusicVolume, -50, 12, "%.1f dB");
@@ -85,8 +86,10 @@ void RenderMenuMain()
             if (UI::Button("Reset###ResetAmbianceVolume")) AdvancedAudioControlsSettings::AmbianceVolume = -12;
         }
 
-        UI::Separator();
-        AdvancedAudioControlsSettings::MuteGameMusicOnMediaPlay = UI::Checkbox("Mute game music while external media is playing", AdvancedAudioControlsSettings::MuteGameMusicOnMediaPlay);
+        if (IsUsingWindows()) {
+            UI::Separator();
+            AdvancedAudioControlsSettings::MuteGameMusicOnMediaPlay = UI::Checkbox("Mute game music while external media is playing", AdvancedAudioControlsSettings::MuteGameMusicOnMediaPlay);
+        }
 
         if (AdvancedAudioControlsSettings::MusicPitch != 1) {
             UI::Separator();
