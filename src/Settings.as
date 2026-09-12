@@ -8,37 +8,61 @@ namespace AdvancedAudioControlsSettings {
     [Setting name="Show a notification when the music changes" category="UI" description="Show notification if the track title or the artist changes, else it won't show"]
     bool DisplayNotificationOnMusicChange = true;
 
-    [Setting name="Mute game music while external media is playing" category="Game"]
+    [Setting hidden]
     bool MuteGameMusicOnMediaPlay = false;
 
-    [Setting name="Music Volume in dB" category="Game" min="-50" max="12" step="0.1" drag="true"]
+    [Setting hidden]
     float MusicVolume = 0;
 
-    [Setting name="Music Pitch" category="Game" min="0.1" max="5" step="0.1" drag="true"]
+    [Setting hidden]
     float MusicPitch = 1;
 
-    [Setting name="Menus UI Volume in dB" category="Game" min="-50" max="12" step="0.1" drag="true"]
+    [Setting hidden]
     float MenuUIVolume = 0;
 
-    [Setting name="Game UI Volume in %" category="Game" min="0" max="200" step="0.1" drag="true"]
+    [Setting hidden]
     float GameUIVolumePercent = 100;
 
-    [Setting name="Engine Volume in %" category="Game" min="0" max="200" step="0.1" drag="true"]
+    [Setting hidden]
     float EngineVolumePercent = 100;
 
-    [Setting name="Wheels Volume in %" category="Game" min="0" max="200" step="0.1" drag="true"]
+    [Setting hidden]
     float WheelsVolumePercent = 100;
 
-    [Setting name="Brake Volume in %" category="Game" min="0" max="200" step="0.1" drag="true"]
+    [Setting hidden]
     float BrakeVolumePercent = 100;
 
-    [Setting name="Gear change click Volume in %" category="Game" min="0" max="200" step="0.1" drag="true"]
+    [Setting hidden]
     float GearVolumePercent = 100;
 
-    [Setting name="Ambiance Volume in %" category="Game" min="0" max="200" step="0.1" drag="true"]
+    [Setting hidden]
     float AmbianceVolumePercent = 100;
 }
 
+[SettingsTab name="Game" icon="VolumeUp"]
+void RenderGameSoundsSettingTab() {
+    if (IsUsingWindows()) {
+        AdvancedAudioControlsSettings::MuteGameMusicOnMediaPlay = UI::Checkbox("Mute game music while external media is playing", AdvancedAudioControlsSettings::MuteGameMusicOnMediaPlay);
+        if (AdvancedAudioControlsSettings::MuteGameMusicOnMediaPlay) {
+            if (SMTCLib::g_currentMedia !is null && SMTCLib::g_currentMedia.playbackStatus == "Playing")
+                UI::TextDisabled("External media is playing; game music is muted.");
+            else
+                UI::TextDisabled("No external media is currently playing.");
+        }
+        UI::Separator();
+    }
+
+    UI::TextDisabled("Tip: Press Ctrl + click on a slider to adjust value.");
+
+    UI::AlignTextToFramePadding();
+    AdvancedAudioControlsSettings::MusicPitch = UI::SliderFloat(Icons::Music + " Music Pitch###MenuMainMusicPitchSlider", AdvancedAudioControlsSettings::MusicPitch, 0.1, 5, "%.3f");
+    if (AdvancedAudioControlsSettings::MusicPitch != 1) {
+        UI::SameLine();
+        if (UI::Button("Reset###ResetMusicPitch")) AdvancedAudioControlsSettings::MusicPitch = 1;
+    }
+
+    AdvancedAudioControlsUI::RenderVolumeOptionsMenuMain(false);
+}
 [SettingsTab name="SMTC Library Debug" icon="FileCodeO"]
 void RenderSMTCLibrarySettingTab() {
     UI::Text("Library Status:");
