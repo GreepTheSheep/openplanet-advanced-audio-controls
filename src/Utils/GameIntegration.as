@@ -10,6 +10,8 @@ namespace Game {
             yield();
 #if SIG_DEVELOPER
             // Arrays and properties used to filter for the Debug tab
+            // Filtering the properties of sound sources is very resource-intensive;
+            // it is only available for the developer signature.
 
             uint tmpAllSourcesPlaying = 0;
             array<uint> tmpAutoSourcesIndexes;
