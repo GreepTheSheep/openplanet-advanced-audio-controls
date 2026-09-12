@@ -1,11 +1,16 @@
 namespace Game {
+#if SIG_DEVELOPER
     dictionary m_AudioSources;
     dictionary m_AudioSourcesPlaying;
     uint m_AudioSourcesPlayingTotal;
+#endif
 
     void FilterAndPatchAudioSourcesAsyncLoop() {
         while(true) {
             yield();
+#if SIG_DEVELOPER
+            // Arrays and properties used to filter for the Debug tab
+
             uint tmpAllSourcesPlaying = 0;
             array<uint> tmpAutoSourcesIndexes;
             uint tmpAutoSourcesPlaying = 0;
@@ -37,6 +42,7 @@ namespace Game {
             uint tmpImpactSourcesPlaying = 0;
             array<uint> tmpEnvironmentSourcesIndexes;
             uint tmpEnvironmentSourcesPlaying = 0;
+#endif
 
             auto audioPort = GetApp().AudioPort;
             auto rootMap = GetApp().RootMap;
@@ -44,7 +50,9 @@ namespace Game {
                 auto source = audioPort.Sources[i];
 
                 bool isPlaying = source.IsPlaying && source.Implementation.IsActuallyPlaying;
+#if SIG_DEVELOPER
                 if (isPlaying) tmpAllSourcesPlaying++;
+#endif
 
                 string fileName = "";
                 CSystemFidFile@ file;
@@ -55,13 +63,16 @@ namespace Game {
 
                 switch (source.BalanceGroup) {
                     case EAudioBalanceGroup::Auto:
+#if SIG_DEVELOPER
                         tmpAutoSourcesIndexes.InsertLast(i);
                         if (isPlaying) tmpAutoSourcesPlaying++;
+#endif
                         break;
                     case EAudioBalanceGroup::Music:
+#if SIG_DEVELOPER
                         tmpMusicSourcesIndexes.InsertLast(i);
                         if (isPlaying) tmpMusicSourcesPlaying++;
-
+#endif
                         if (AdvancedAudioControlsSettings::MuteGameMusicOnMediaPlay) {
                             if (SMTCLib::g_currentMedia !is null && SMTCLib::g_currentMedia.playbackStatus == "Playing")
                                 source.PlugSound.VolumedB = -50;
@@ -72,15 +83,17 @@ namespace Game {
 
                         break;
                     case EAudioBalanceGroup::Menus:
+#if SIG_DEVELOPER
                         tmpMenusSourcesIndexes.InsertLast(i);
                         if (isPlaying) tmpMenusSourcesPlaying++;
-
+#endif
                         source.PlugSound.VolumedB = AdvancedAudioControlsSettings::MenuUIVolume;
                         break;
                     case EAudioBalanceGroup::Ambiance:
+#if SIG_DEVELOPER
                         tmpAmbianceSourcesIndexes.InsertLast(i);
                         if (isPlaying) tmpAmbianceSourcesPlaying++;
-
+#endif
                         if (source.PlugSound.IdName == "CommonCarWind") {
                             // Wind sound when speeding
                             source.PlugSound.VolumedB = CalculateNewDb(0, AdvancedAudioControlsSettings::AmbianceVolumePercent);
@@ -107,9 +120,10 @@ namespace Game {
                         }
                         break;
                     case EAudioBalanceGroup::Player:
+#if SIG_DEVELOPER
                         tmpPlayerSourcesIndexes.InsertLast(i);
                         if (isPlaying) tmpPlayerSourcesPlaying++;
-
+#endif
                         if (source.PlugSound.IdName == "StadiumCarEngine") {
                             // Unfortunally, we can't separate volumes for player's ghost car and player's playing car
                             // Base volume for StadiumCarEngine is 5dB, no matter what
@@ -150,25 +164,34 @@ namespace Game {
 
                         break;
                     case EAudioBalanceGroup::Bengs:
+#if SIG_DEVELOPER
                         tmpBengsSourcesIndexes.InsertLast(i);
                         if (isPlaying) tmpBengsSourcesPlaying++;
+#endif
                         break;
                     case EAudioBalanceGroup::Guns:
+#if SIG_DEVELOPER
                         tmpGunsSourcesIndexes.InsertLast(i);
                         if (isPlaying) tmpGunsSourcesPlaying++;
+#endif
                         break;
                     case EAudioBalanceGroup::BackingDirect:
+#if SIG_DEVELOPER
                         tmpBackingDirectSourcesIndexes.InsertLast(i);
                         if (isPlaying) tmpBackingDirectSourcesPlaying++;
+#endif
                         break;
                     case EAudioBalanceGroup::Trails:
+#if SIG_DEVELOPER
                         tmpTrailsSourcesIndexes.InsertLast(i);
                         if (isPlaying) tmpTrailsSourcesPlaying++;
+#endif
                         break;
                     case EAudioBalanceGroup::GameUI:
+#if SIG_DEVELOPER
                         tmpGameUISourcesIndexes.InsertLast(i);
                         if (isPlaying) tmpGameUISourcesPlaying++;
-
+#endif
                         if (fileName == "Race3.wav") {
                             source.PlugSound.VolumedB = CalculateNewDb(-8.5, AdvancedAudioControlsSettings::GameUIVolumePercent);
                         } else if (fileName == "RaceGo.wav") {
@@ -176,28 +199,39 @@ namespace Game {
                         }
                         break;
                     case EAudioBalanceGroup::Custom1:
+#if SIG_DEVELOPER
                         tmpCustom1SourcesIndexes.InsertLast(i);
                         if (isPlaying) tmpCustom1SourcesPlaying++;
+#endif
                         break;
                     case EAudioBalanceGroup::Custom2:
+#if SIG_DEVELOPER
                         tmpCustom2SourcesIndexes.InsertLast(i);
                         if (isPlaying) tmpCustom2SourcesPlaying++;
+#endif
                         break;
                     case EAudioBalanceGroup::OtherPlayers:
+#if SIG_DEVELOPER
                         tmpOtherPlayersSourcesIndexes.InsertLast(i);
                         if (isPlaying) tmpOtherPlayersSourcesPlaying++;
+#endif
                         break;
                     case EAudioBalanceGroup::ImpactWarning:
+#if SIG_DEVELOPER
                         tmpImpactSourcesIndexes.InsertLast(i);
                         if (isPlaying) tmpImpactSourcesPlaying++;
+#endif
                         break;
                     case EAudioBalanceGroup::Environment:
+#if SIG_DEVELOPER
                         tmpEnvironmentSourcesIndexes.InsertLast(i);
                         if (isPlaying) tmpEnvironmentSourcesPlaying++;
+#endif
                         break;
                 }
             }
 
+#if SIG_DEVELOPER
             m_AudioSourcesPlayingTotal = tmpAllSourcesPlaying;
 
             m_AudioSources.Set("Auto", tmpAutoSourcesIndexes);
@@ -230,6 +264,7 @@ namespace Game {
             m_AudioSourcesPlaying.Set("ImpactWarning", tmpImpactSourcesPlaying);
             m_AudioSources.Set("Environment", tmpEnvironmentSourcesIndexes);
             m_AudioSourcesPlaying.Set("Environment", tmpEnvironmentSourcesPlaying);
+#endif
         }
     }
 }

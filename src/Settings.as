@@ -63,6 +63,9 @@ void RenderGameSoundsSettingTab() {
 
     AdvancedAudioControlsUI::RenderVolumeOptionsMenuMain(false);
 }
+
+#if SIG_DEVELOPER
+// Debug tabs
 [SettingsTab name="SMTC Library Debug" icon="FileCodeO"]
 void RenderSMTCLibrarySettingTab() {
     UI::Text("Library Status:");
@@ -91,7 +94,6 @@ void RenderSMTCLibrarySettingTab() {
 }
 
 bool AudioSourcesDebugSettingTab_FilterPlaying = true;
-uint AudioSourcesDebugSettingTab_SourcesPlaying;
 
 [SettingsTab name="Audio Sources Debug" icon="Code"]
 void RenderAudioSourcesDebugSettingTab() {
@@ -135,3 +137,4 @@ void RenderAudioSourcesDebugSettingTab() {
         }
     }
 }
+#endif
