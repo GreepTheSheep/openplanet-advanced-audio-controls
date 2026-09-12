@@ -11,7 +11,8 @@ bool IsUsingWindows() {
 }
 
 void Main() {
-    startnew(CoroutineFunc(Game::FilterAndPatchAudioSourcesAsyncLoop));
+    if (!Game::m_patchAudioSourcesLoopRunning)
+        startnew(CoroutineFunc(Game::PatchAudioSourcesAsyncLoop));
 
     if (!IsUsingWindows()) {
         UI::ShowNotification(

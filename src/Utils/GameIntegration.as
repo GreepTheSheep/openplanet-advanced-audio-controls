@@ -1,12 +1,14 @@
 namespace Game {
+    bool m_patchAudioSourcesLoopRunning = false;
 #if SIG_DEVELOPER
     dictionary m_AudioSources;
     dictionary m_AudioSourcesPlaying;
     uint m_AudioSourcesPlayingTotal;
 #endif
 
-    void FilterAndPatchAudioSourcesAsyncLoop() {
-        while(true) {
+    void PatchAudioSourcesAsyncLoop() {
+        m_patchAudioSourcesLoopRunning = true;
+        while(m_patchAudioSourcesLoopRunning) {
             yield();
 #if SIG_DEVELOPER
             // Arrays and properties used to filter for the Debug tab
