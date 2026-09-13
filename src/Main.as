@@ -25,6 +25,7 @@ void Main() {
 
         if (SMTCLib::Ping()) {
             trace("SMTC library loaded and responding");
+            SMTCLib::g_isLibraryResponding = true;
             startnew(CoroutineFunc(SMTCLib::FetchCurrentMediaAsyncLoop));
         } else {
             warn("SMTC library failed to respond");

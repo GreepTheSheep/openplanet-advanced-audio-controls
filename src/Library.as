@@ -1,5 +1,6 @@
 namespace SMTCLib {
     Import::Library@ g_smtcLib;
+    bool g_isLibraryResponding = false;
     SMTCMedia@ g_currentMedia;
     string cachedArtistTitle;
 
