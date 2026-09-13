@@ -1,10 +1,10 @@
 namespace AdvancedAudioControlsUI {
     void RenderVolumeOptionsMenuMain(const bool &in displayMoreTreeNode = true) {
         UI::AlignTextToFramePadding();
-        AdvancedAudioControlsSettings::MusicVolume = UI::SliderFloat((AdvancedAudioControlsSettings::MusicVolume == -50 ? Icons::Kenney::MusicOff : Icons::Kenney::MusicOn) + " Music###MenuMainMusicVolumeSlider", AdvancedAudioControlsSettings::MusicVolume, -50, 12, "%.1f dB");
-        if (AdvancedAudioControlsSettings::MusicVolume != 0) {
+        AdvancedAudioControlsSettings::MusicVolumePercent = UI::SliderFloat((AdvancedAudioControlsSettings::MusicVolumePercent == 0 ? Icons::Kenney::MusicOff : Icons::Kenney::MusicOn) + " Music###MenuMainMusicVolumePercentSlider", AdvancedAudioControlsSettings::MusicVolumePercent, 0, 200, "%.1f %%");
+        if (AdvancedAudioControlsSettings::MusicVolumePercent != 100) {
             UI::SameLine();
-            if (UI::Button("Reset###ResetMusicVolume")) AdvancedAudioControlsSettings::MusicVolume = 0;
+            if (UI::Button("Reset###ResetMusicVolumePercent")) AdvancedAudioControlsSettings::MusicVolumePercent = 100;
         }
 
         UI::AlignTextToFramePadding();
@@ -38,10 +38,10 @@ namespace AdvancedAudioControlsUI {
 
     void RenderMoreVolumeOptionsMenuMain() {
         UI::AlignTextToFramePadding();
-        AdvancedAudioControlsSettings::MenuUIVolume = UI::SliderFloat((AdvancedAudioControlsSettings::MenuUIVolume == -50 ? Icons::Kenney::SoundOff : Icons::Kenney::SoundOn) + " Menu UI###MenuMainMenuUIVolumeSlider", AdvancedAudioControlsSettings::MenuUIVolume, -50, 12, "%.1f dB");
-        if (AdvancedAudioControlsSettings::MenuUIVolume != 0) {
+        AdvancedAudioControlsSettings::MenuUIVolumePercent = UI::SliderFloat((AdvancedAudioControlsSettings::MenuUIVolumePercent == 0 ? Icons::Kenney::SoundOff : Icons::Kenney::SoundOn) + " Menu UI###MenuMainMenuUIVolumePercentSlider", AdvancedAudioControlsSettings::MenuUIVolumePercent, 0, 200, "%.1f %%");
+        if (AdvancedAudioControlsSettings::MenuUIVolumePercent != 100) {
             UI::SameLine();
-            if (UI::Button("Reset###ResetMenuUIVolume")) AdvancedAudioControlsSettings::MenuUIVolume = 0;
+            if (UI::Button("Reset###ResetMenuUIVolumePercent")) AdvancedAudioControlsSettings::MenuUIVolumePercent = 100;
         }
 
         UI::AlignTextToFramePadding();

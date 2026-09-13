@@ -80,8 +80,8 @@ namespace Game {
                         if (AdvancedAudioControlsSettings::MuteGameMusicOnMediaPlay) {
                             if (SMTCLib::g_currentMedia !is null && SMTCLib::g_currentMedia.playbackStatus == "Playing")
                                 source.PlugSound.VolumedB = -50;
-                            else source.PlugSound.VolumedB = AdvancedAudioControlsSettings::MusicVolume;
-                        } else source.PlugSound.VolumedB = AdvancedAudioControlsSettings::MusicVolume;
+                            else source.PlugSound.VolumedB = CalculateNewDb(0, AdvancedAudioControlsSettings::MusicVolumePercent);
+                        } else source.PlugSound.VolumedB = CalculateNewDb(0, AdvancedAudioControlsSettings::MusicVolumePercent);
 
                         source.PlugSound.Pitch = AdvancedAudioControlsSettings::MusicPitch;
 
@@ -91,7 +91,7 @@ namespace Game {
                         tmpMenusSourcesIndexes.InsertLast(i);
                         if (isPlaying) tmpMenusSourcesPlaying++;
 #endif
-                        source.PlugSound.VolumedB = AdvancedAudioControlsSettings::MenuUIVolume;
+                        source.PlugSound.VolumedB = CalculateNewDb(0, AdvancedAudioControlsSettings::MenuUIVolumePercent);
                         break;
                     case EAudioBalanceGroup::Ambiance:
 #if SIG_DEVELOPER

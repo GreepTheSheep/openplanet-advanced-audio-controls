@@ -12,13 +12,13 @@ namespace AdvancedAudioControlsSettings {
     bool MuteGameMusicOnMediaPlay = false;
 
     [Setting hidden]
-    float MusicVolume = 0;
+    float MusicVolumePercent = 100;
 
     [Setting hidden]
     float MusicPitch = 1;
 
     [Setting hidden]
-    float MenuUIVolume = 0;
+    float MenuUIVolumePercent = 100;
 
     [Setting hidden]
     float GameUIVolumePercent = 100;
