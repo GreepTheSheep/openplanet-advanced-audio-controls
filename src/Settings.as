@@ -12,10 +12,10 @@ namespace AdvancedAudioControlsSettings {
         IconOnly
     };
 
-    [Setting name="Display external music title on menu label" category="UI" if="SMTCLib::g_isLibraryResponding"]
+    [Setting name="Display external media title on menu label" category="UI" if="SMTCLib::g_isLibraryResponding"]
     bool DisplayExternalTitleOnMenuLabel = false;
 
-    [Setting name="Menu Label Length when external music is playing" category="UI" if="AdvancedAudioControlsSettings::DisplayExternalTitleOnMenuLabel"]
+    [Setting name="Menu Label Length when external media is playing" category="UI" if="AdvancedAudioControlsSettings::DisplayExternalTitleOnMenuLabel"]
     MenuLabelsMusicPlaying MenuLabelMusicPlayingLength = MenuLabelsMusicPlaying::ArtistTitle;
 
     [Setting name="Menu Label Length" category="UI"]
