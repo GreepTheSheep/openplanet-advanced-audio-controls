@@ -1,4 +1,17 @@
 namespace AdvancedAudioControlsSettings {
+
+    [Setting name="Display external music title on menu label" category="UI" if="IsUsingWindows" enableif="SMTCLib::g_isLibraryResponding"]
+    bool DisplayExternalTitleOnMenuLabel = false;
+
+    enum MenuLabels {
+        Full,
+        Short,
+        IconOnly
+    };
+
+    [Setting name="Menu Label Length" category="UI" if="!AdvancedAudioControlsSettings::DisplayExternalTitleOnMenuLabel"]
+    MenuLabels MenuLabelLength = MenuLabels::Full;
+
     [Setting name="Show Stop Button" category="UI" description="Stop button is disabled on live streams, despite the setting"]
     bool DisplayStopButton = true;
 
@@ -73,6 +86,10 @@ void RenderSMTCLibrarySettingTab() {
         UI::SameLine();
         if (SMTCLib::g_smtcLib is null) UI::Text(Icons::Times + " Not loaded");
         else UI::Text(Icons::Check + " Loaded");
+        if (SMTCLib::g_isLibraryResponding) {
+            UI::SameLine();
+            UI::Text("Responds");
+        }
 
         if (SMTCLib::g_smtcLib is null && UI::Button("Try to reload Library")) {
             startnew(CoroutineFunc(Main));

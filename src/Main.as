@@ -35,9 +35,9 @@ void Main() {
 
 void RenderMenuMain()
 {
-    if (UI::BeginMenu(Icons::VolumeUp + " " + PLUGIN_NAME + "###AdvancedAudioControlsMenu")) {
+    if (UI::BeginMenu(AdvancedAudioControlsUI::OutputMenuLabel() + "###AdvancedAudioControlsMenu")) {
         if (IsUsingWindows()) {
-            if (SMTCLib::g_currentMedia !is null && SMTCLib::g_currentMedia.playbackStatus != "Closed" ) {
+            if (SMTCLib::g_currentMedia !is null && SMTCLib::g_currentMedia.playbackStatus != "Closed") {
                 AdvancedAudioControlsUI::RenderSMTCControlsMenuMain();
             } else {
                 UI::TextDisabled("No external media playing");
