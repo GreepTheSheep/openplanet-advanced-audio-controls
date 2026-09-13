@@ -69,28 +69,30 @@ void RenderGameSoundsSettingTab() {
 [SettingsTab name="SMTC Library Debug" icon="FileCodeO"]
 void RenderSMTCLibrarySettingTab() {
     UI::Text("Library Status:");
-    UI::SameLine();
-    if (SMTCLib::g_smtcLib is null) UI::Text(Icons::Times + " Not loaded");
-    else UI::Text(Icons::Check + " Loaded");
+    if (IsUsingWindows()) {
+        UI::SameLine();
+        if (SMTCLib::g_smtcLib is null) UI::Text(Icons::Times + " Not loaded");
+        else UI::Text(Icons::Check + " Loaded");
 
-    if (SMTCLib::g_smtcLib is null && UI::Button("Try to reload Library")) {
-        startnew(CoroutineFunc(Main));
-    }
-
-    if (SMTCLib::HasMedia()) {
-        if (UI::Button("Output current metadata JSON to log")) {
-            trace(SMTCLib::GetMetadataJson());
+        if (SMTCLib::g_smtcLib is null && UI::Button("Try to reload Library")) {
+            startnew(CoroutineFunc(Main));
         }
-        if (SMTCLib::g_currentMedia !is null) {
-            UI::Text("Title: " + SMTCLib::g_currentMedia.title);
-            UI::Text("Artist(s): " + SMTCLib::g_currentMedia.artist);
-            UI::Text("Source app: " + SMTCLib::g_currentMedia.sourceAppId);
-            UI::Text("Status: " + SMTCLib::g_currentMedia.playbackStatus);
 
-            auto thumbnail = Images::CachedFromB64(SMTCLib::g_currentMedia.thumbnailBase64);
-            if (thumbnail !is null && thumbnail.m_texture !is null) UI::Image(thumbnail.m_texture);
-        }
-    } else UI::Text("No media playing right now");
+        if (SMTCLib::HasMedia()) {
+            if (UI::Button("Output current metadata JSON to log")) {
+                trace(SMTCLib::GetMetadataJson());
+            }
+            if (SMTCLib::g_currentMedia !is null) {
+                UI::Text("Title: " + SMTCLib::g_currentMedia.title);
+                UI::Text("Artist(s): " + SMTCLib::g_currentMedia.artist);
+                UI::Text("Source app: " + SMTCLib::g_currentMedia.sourceAppId);
+                UI::Text("Status: " + SMTCLib::g_currentMedia.playbackStatus);
+
+                auto thumbnail = Images::CachedFromB64(SMTCLib::g_currentMedia.thumbnailBase64);
+                if (thumbnail !is null && thumbnail.m_texture !is null) UI::Image(thumbnail.m_texture);
+            }
+        } else UI::Text("No media playing right now");
+    } else UI::Text("Your current OS isn't Windows.");
 }
 
 bool AudioSourcesDebugSettingTab_FilterPlaying = true;
