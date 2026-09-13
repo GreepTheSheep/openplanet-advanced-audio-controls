@@ -2,8 +2,7 @@ bool IsUsingWindows() {
 #if WINDOWS_WINE
     // Running on Wine/Proton: SMTC isn't compatible on these layers
     return false;
-#endif
-#if WINDOWS
+#elif WINDOWS
     return true;
 #else
     return false;
@@ -18,7 +17,7 @@ void Main() {
         UI::ShowNotification(
             Icons::Kenney::ExclamationCircle + " " + PLUGIN_NAME + " - Warning",
             "You are not using Windows right now. External media controls are not possible.",
-            UI::HSV(0.11, 1.0, 1.0), 5000
+            UI::HSV(0.11, 1.0, 1.0), 20000
         );
         return;
     } else {
