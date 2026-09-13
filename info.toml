@@ -2,6 +2,7 @@
 name = "Advanced Audio Controls"
 author = "Greep"
 category = "Audio"
+siteid = 947
 
 version = "0.1"
 
