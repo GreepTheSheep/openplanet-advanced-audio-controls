@@ -22,6 +22,13 @@ namespace AdvancedAudioControlsUI {
         }
 
         UI::AlignTextToFramePadding();
+        AdvancedAudioControlsSettings::ModifierBlocksVolumePercent = UI::SliderFloat(Icons::AngleDoubleUp + " Modifier Blocks (Turbo, Reactor...)###MenuMainModifierBlocksVolumePercentSlider", AdvancedAudioControlsSettings::ModifierBlocksVolumePercent, 0, 200, "%.1f %%");
+        if (AdvancedAudioControlsSettings::ModifierBlocksVolumePercent != 100) {
+            UI::SameLine();
+            if (UI::Button("Reset###ResetModifierBlocksVolumePercent")) AdvancedAudioControlsSettings::ModifierBlocksVolumePercent = 100;
+        }
+
+        UI::AlignTextToFramePadding();
         AdvancedAudioControlsSettings::BrakeVolumePercent = UI::SliderFloat(Icons::Kenney::Car + " Brake###MenuMainBrakeVolumePercentSlider", AdvancedAudioControlsSettings::BrakeVolumePercent, 0, 200, "%.1f %%");
         if (AdvancedAudioControlsSettings::BrakeVolumePercent != 100) {
             UI::SameLine();
@@ -49,6 +56,13 @@ namespace AdvancedAudioControlsUI {
         if (AdvancedAudioControlsSettings::GameUIVolumePercent != 100) {
             UI::SameLine();
             if (UI::Button("Reset###ResetGameUIVolumePercent")) AdvancedAudioControlsSettings::GameUIVolumePercent = 100;
+        }
+
+        UI::AlignTextToFramePadding();
+        AdvancedAudioControlsSettings::CollisionVolumePercent = UI::SliderFloat(Icons::ChainBroken + " Collisions###MenuMainCollisionVolumePercentSlider", AdvancedAudioControlsSettings::CollisionVolumePercent, 0, 200, "%.1f %%");
+        if (AdvancedAudioControlsSettings::CollisionVolumePercent != 100) {
+            UI::SameLine();
+            if (UI::Button("Reset###ResetCollisionVolumePercent")) AdvancedAudioControlsSettings::CollisionVolumePercent = 100;
         }
 
         UI::AlignTextToFramePadding();

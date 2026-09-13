@@ -52,10 +52,16 @@ namespace AdvancedAudioControlsSettings {
     float EngineVolumePercent = 100;
 
     [Setting hidden]
+    float CollisionVolumePercent = 100;
+
+    [Setting hidden]
     float WheelsVolumePercent = 100;
 
     [Setting hidden]
     float BrakeVolumePercent = 100;
+
+    [Setting hidden]
+    float ModifierBlocksVolumePercent = 100;
 
     [Setting hidden]
     float GearVolumePercent = 100;

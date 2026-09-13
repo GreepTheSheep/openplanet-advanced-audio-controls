@@ -91,7 +91,11 @@ namespace Game {
                         tmpMenusSourcesIndexes.InsertLast(i);
                         if (isPlaying) tmpMenusSourcesPlaying++;
 #endif
-                        source.PlugSound.VolumedB = CalculateNewDb(0, AdvancedAudioControlsSettings::MenuUIVolumePercent);
+                        if (fileName == "RaceCheckPoint_Experimental.wav" || fileName == "RaceCheckPointLate_Experimental.wav" || fileName == "RaceCheckPointAhead_Experimental.wav") {
+                            source.PlugSound.VolumedB = CalculateNewDb(0, AdvancedAudioControlsSettings::GameUIVolumePercent);
+                        } else {
+                            source.PlugSound.VolumedB = CalculateNewDb(0, AdvancedAudioControlsSettings::MenuUIVolumePercent);
+                        }
                         break;
                     case EAudioBalanceGroup::Ambiance:
 #if SIG_DEVELOPER
@@ -131,6 +135,8 @@ namespace Game {
                                         source.PlugSound.VolumedB = CalculateNewDb(-11, AdvancedAudioControlsSettings::AmbianceVolumePercent);
                                     // default for other (upcoming?) vistas is set to -11dB, personal choice
                                 } else source.PlugSound.VolumedB = CalculateNewDb(-11, AdvancedAudioControlsSettings::AmbianceVolumePercent);
+                            } else if (fileName == "BulletTime_Start.wav") {
+                                source.PlugSound.VolumedB = CalculateNewDb(-1.5, AdvancedAudioControlsSettings::ModifierBlocksVolumePercent);
                             }
                         }
                         break;
@@ -143,37 +149,36 @@ namespace Game {
                             // Unfortunally, we can't separate volumes for player's ghost car and player's playing car
                             // Base volume for StadiumCarEngine is 5dB
                             source.PlugSound.VolumedB = CalculateNewDb(5, AdvancedAudioControlsSettings::EngineVolumePercent);
-                        }
-
-                        if (source.PlugSound.IdName == "StadiumCarRoar") {
+                        } else if (source.PlugSound.IdName == "StadiumCarRoar") {
                             // Base volume for StadiumCarRoar is -15dB
                             source.PlugSound.VolumedB = CalculateNewDb(-15, AdvancedAudioControlsSettings::EngineVolumePercent);
-                        }
-
-                        if (source.PlugSound.IdName == "CommonCarWheels") {
+                        } else if (source.PlugSound.IdName == "CommonCarWheels") {
                             // Base volume for CommonCarWheels is -9dB
                             source.PlugSound.VolumedB = CalculateNewDb(-9, AdvancedAudioControlsSettings::WheelsVolumePercent);
-                        }
-
-                        if (source.PlugSound.IdName == "CommonCarBrakeSqueals") {
+                        } else if (source.PlugSound.IdName == "CommonCarBrakeSqueals") {
                             // Base volume for CommonCarBrakeSqueals is -9dB
                             source.PlugSound.VolumedB = CalculateNewDb(-9, AdvancedAudioControlsSettings::BrakeVolumePercent);
-                        }
-
-                        if (source.PlugSound.IdName == "CarBrakeLights") {
+                        } else if (source.PlugSound.IdName == "CarBrakeLights") {
                             // Base volume for CarBrakeLights is -9dB
                             source.PlugSound.VolumedB = CalculateNewDb(-9, AdvancedAudioControlsSettings::BrakeVolumePercent);
-                        }
-
-                        // TODO: Collisions
-                        // TODO: Other cars
-                        // TODO: Turbo, Reactor and other effects
-
-                        if (source.PlugSound.IdName == "Unassigned") {
+                        } else if (source.PlugSound.IdName == "CommonCarTurbo") {
+                            // Base volume for CommonCarTurbo is -1.5dB
+                            source.PlugSound.VolumedB = CalculateNewDb(-1.5, AdvancedAudioControlsSettings::ModifierBlocksVolumePercent);
+                        } else if (source.PlugSound.IdName == "CommonCarSparkles") {
+                            // Base volume for CommonCarSparkles is -1.5dB
+                            source.PlugSound.VolumedB = CalculateNewDb(-1.5, AdvancedAudioControlsSettings::CollisionVolumePercent);
+                        } else if (source.PlugSound.IdName == "WaterSplash") {
+                            // Base volume for WaterSplash is -6.01dB
+                            source.PlugSound.VolumedB = CalculateNewDb(-6.01, AdvancedAudioControlsSettings::CollisionVolumePercent);
+                        } else {
                             // Unassigned sounds = mostly sounds from file
 
                             if (fileName == "GearChange1.wav") {
                                 source.PlugSound.VolumedB = CalculateNewDb(-10.45, AdvancedAudioControlsSettings::GearVolumePercent);
+                            } else if (fileName == "SpecialBoost_Loop.wav" || fileName == "SpecialBoost_Loop_2.wav") {
+                                source.PlugSound.VolumedB = CalculateNewDb(-6.01, AdvancedAudioControlsSettings::ModifierBlocksVolumePercent);
+                            } else if (fileName == "Block_Fragile_01.wav") {
+                                source.PlugSound.VolumedB = CalculateNewDb(-6.01, AdvancedAudioControlsSettings::ModifierBlocksVolumePercent);
                             } else {
                                 // Mechanical noises from the Car, they are unassigned and they don't have a file name
                                 // Default volume is -6.02dB
@@ -187,6 +192,31 @@ namespace Game {
                         tmpBengsSourcesIndexes.InsertLast(i);
                         if (isPlaying) tmpBengsSourcesPlaying++;
 #endif
+                        if (source.PlugSound.IdName == "CommonCarHitWheels") {
+                            source.PlugSound.VolumedB = CalculateNewDb(-8, AdvancedAudioControlsSettings::CollisionVolumePercent);
+                        } else if (source.PlugSound.IdName == "CommonCarHitBody") {
+                            if (fileName == "BodyHitSmall1.wav") {
+                                source.PlugSound.VolumedB = CalculateNewDb(-8, AdvancedAudioControlsSettings::CollisionVolumePercent);
+                            }
+                        } else if (source.PlugSound.IdName == "TextureHitConcrete") {
+                            source.PlugSound.VolumedB = CalculateNewDb(-8, AdvancedAudioControlsSettings::CollisionVolumePercent);
+                        } else if (source.PlugSound.IdName == "TextureHitGrass") {
+                            source.PlugSound.VolumedB = CalculateNewDb(-6, AdvancedAudioControlsSettings::CollisionVolumePercent);
+                        } else if (source.PlugSound.IdName == "TextureHitDirt") {
+                            source.PlugSound.VolumedB = CalculateNewDb(-11, AdvancedAudioControlsSettings::CollisionVolumePercent);
+                        } else if (source.PlugSound.IdName == "TextureHitMetal") {
+                            source.PlugSound.VolumedB = CalculateNewDb(-9, AdvancedAudioControlsSettings::CollisionVolumePercent);
+                        } else if (source.PlugSound.IdName == "TextureHitMetalResonnant") {
+                            source.PlugSound.VolumedB = CalculateNewDb(-3, AdvancedAudioControlsSettings::CollisionVolumePercent);
+                        } else {
+                            if (fileName == "SpecialBoost_Start.wav" || fileName == "SpecialBoost_Start_2.wav") {
+                                source.PlugSound.VolumedB = CalculateNewDb(3, AdvancedAudioControlsSettings::ModifierBlocksVolumePercent);
+                            } else if (fileName == "Block_Reset_02.wav") {
+                                source.PlugSound.VolumedB = CalculateNewDb(5, AdvancedAudioControlsSettings::ModifierBlocksVolumePercent);
+                            } else if (fileName == "Block_Transfo.wav") {
+                                source.PlugSound.VolumedB = CalculateNewDb(5, AdvancedAudioControlsSettings::ModifierBlocksVolumePercent);
+                            }
+                        }
                         break;
                     case EAudioBalanceGroup::Guns:
 #if SIG_DEVELOPER
@@ -211,10 +241,16 @@ namespace Game {
                         tmpGameUISourcesIndexes.InsertLast(i);
                         if (isPlaying) tmpGameUISourcesPlaying++;
 #endif
-                        if (fileName == "Race3.wav") {
+                        if (fileName == "Race1.wav") {
+                            source.PlugSound.VolumedB = CalculateNewDb(-10.5, AdvancedAudioControlsSettings::GameUIVolumePercent);
+                        } else if (fileName == "Race2.wav") {
+                            source.PlugSound.VolumedB = CalculateNewDb(-9.5, AdvancedAudioControlsSettings::GameUIVolumePercent);
+                        } else if (fileName == "Race3.wav") {
                             source.PlugSound.VolumedB = CalculateNewDb(-8.5, AdvancedAudioControlsSettings::GameUIVolumePercent);
                         } else if (fileName == "RaceGo.wav") {
                             source.PlugSound.VolumedB = CalculateNewDb(-4.5, AdvancedAudioControlsSettings::GameUIVolumePercent);
+                        } else if (fileName == "BulletTime_Loop.wav") {
+                            source.PlugSound.VolumedB = CalculateNewDb(-6, AdvancedAudioControlsSettings::ModifierBlocksVolumePercent);
                         }
                         break;
                     case EAudioBalanceGroup::Custom1:
@@ -234,6 +270,7 @@ namespace Game {
                         tmpOtherPlayersSourcesIndexes.InsertLast(i);
                         if (isPlaying) tmpOtherPlayersSourcesPlaying++;
 #endif
+                        // TODO: Other cars
                         break;
                     case EAudioBalanceGroup::ImpactWarning:
 #if SIG_DEVELOPER
