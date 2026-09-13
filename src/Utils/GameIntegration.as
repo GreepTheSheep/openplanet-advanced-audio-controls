@@ -141,7 +141,7 @@ namespace Game {
 #endif
                         if (source.PlugSound.IdName == "StadiumCarEngine") {
                             // Unfortunally, we can't separate volumes for player's ghost car and player's playing car
-                            // Base volume for StadiumCarEngine is 5dB, no matter what
+                            // Base volume for StadiumCarEngine is 5dB
                             source.PlugSound.VolumedB = CalculateNewDb(5, AdvancedAudioControlsSettings::EngineVolumePercent);
                         }
 
@@ -174,6 +174,10 @@ namespace Game {
 
                             if (fileName == "GearChange1.wav") {
                                 source.PlugSound.VolumedB = CalculateNewDb(-10.45, AdvancedAudioControlsSettings::GearVolumePercent);
+                            } else {
+                                // Mechanical noises from the Car, they are unassigned and they don't have a file name
+                                // Default volume is -6.02dB
+                                source.PlugSound.VolumedB = CalculateNewDb(-6.02, AdvancedAudioControlsSettings::EngineVolumePercent);
                             }
                         }
 
