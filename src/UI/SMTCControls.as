@@ -17,9 +17,18 @@ namespace AdvancedAudioControlsUI {
         UI::SetCursorPos(posTop + vec2(width + 8, 0));
 
         UI::BeginChild("AdvancedAudioControlsMenuMainMetadata", vec2(width + 120, height));
-        UI::TextWrapped(SMTCLib::g_currentMedia.title);
-        UI::TextWrapped("\\$999" + SMTCLib::g_currentMedia.artist);
-        UI::TextWrapped("\\$555" + SMTCLib::g_currentMedia.album);
+
+        const float pauseMs = 1000;
+        const float gap = 32;
+        const float marqueeSpeed = 60;
+        float maxTextWidth = UI::MeasureString(SMTCLib::g_currentMedia.title).x;
+        maxTextWidth = Math::Max(maxTextWidth, UI::MeasureString(SMTCLib::g_currentMedia.artist).x);
+        maxTextWidth = Math::Max(maxTextWidth, UI::MeasureString(SMTCLib::g_currentMedia.album).x);
+        float cycleMs = ((maxTextWidth + gap) / marqueeSpeed) * 1000 + pauseMs;
+
+        UI::MarqueeText(SMTCLib::g_currentMedia.title, marqueeSpeed, gap, pauseMs, cycleMs);
+        UI::MarqueeText("\\$999" + SMTCLib::g_currentMedia.artist, marqueeSpeed, gap, pauseMs, cycleMs);
+        UI::MarqueeText("\\$555" + SMTCLib::g_currentMedia.album, marqueeSpeed, gap, pauseMs, cycleMs);
 
         UI::SetCursorPos(vec2(UI::GetCursorPos().x, height - 30));
         if (AdvancedAudioControlsSettings::DisplayStopButton && SMTCLib::g_currentMedia.durationMs != 0) {
@@ -32,7 +41,7 @@ namespace AdvancedAudioControlsUI {
         }
         if (AdvancedAudioControlsSettings::DisplayForwardAndRewindButtons && SMTCLib::g_currentMedia.durationMs != 0) {
             if (UI::Button(Icons::Backward)) SMTCLib::Rewind();
-            UI::SetPreviousTooltip("Rewind");
+            UI::SetItemTooltip("Rewind");
             UI::SameLine();
         }
         if (SMTCLib::g_currentMedia.playbackStatus == "Paused" && UI::Button(Icons::Play)) SMTCLib::Play();
@@ -40,7 +49,7 @@ namespace AdvancedAudioControlsUI {
         UI::SameLine();
         if (AdvancedAudioControlsSettings::DisplayForwardAndRewindButtons && SMTCLib::g_currentMedia.durationMs != 0) {
             if (UI::Button(Icons::Forward)) SMTCLib::FastForward();
-            UI::SetPreviousTooltip("Fast Forward");
+            UI::SetItemTooltip("Fast Forward");
             UI::SameLine();
         }
         if (SMTCLib::g_currentMedia.durationMs != 0) {
