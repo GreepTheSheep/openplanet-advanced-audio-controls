@@ -101,8 +101,19 @@ namespace Game {
                         if (source.PlugSound.IdName == "CommonCarWind") {
                             // Wind sound when speeding
                             source.PlugSound.VolumedB = CalculateNewDb(0, AdvancedAudioControlsSettings::AmbianceVolumePercent);
-                        } else if (source.PlugSound.IdName == "Unassigned") {
-                            if (fileName == "AmbStadium.ogg") {
+                        } else if (source.PlugSound.IdName == "WhooshDecoItems") {
+                            // Whoosh sound when speeding next to a deco item
+                            source.PlugSound.VolumedB = CalculateNewDb(-3, AdvancedAudioControlsSettings::AmbianceVolumePercent);
+                        } else if (source.PlugSound.IdName == "RaceWoosh") {
+                            if (fileName == "MicWhoosh.wav") {
+                                // Whoosh sound when passing a checkpoint, default -9dB
+                                source.PlugSound.VolumedB = CalculateNewDb(-9, AdvancedAudioControlsSettings::AmbianceVolumePercent);
+                            }
+                        } else {
+                            if (fileName == "MicWhooshStart.wav") {
+                                // Second Whoosh sound when passing a checkpoint, this sound has a IdName "Unassigned"
+                                source.PlugSound.VolumedB = CalculateNewDb(-9, AdvancedAudioControlsSettings::AmbianceVolumePercent);
+                            } else if (fileName == "AmbStadium.ogg") {
                                 // Stadium ambiance sound, default -11dB
                                 source.PlugSound.VolumedB = CalculateNewDb(-11, AdvancedAudioControlsSettings::AmbianceVolumePercent);
                             } else if (fileName == "Amb.ogg" || fileName == "AmbWind.ogg") {
