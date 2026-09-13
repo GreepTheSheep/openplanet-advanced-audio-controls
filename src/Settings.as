@@ -1,24 +1,33 @@
 namespace AdvancedAudioControlsSettings {
 
-    [Setting name="Display external music title on menu label" category="UI" if="IsUsingWindows" enableif="SMTCLib::g_isLibraryResponding"]
-    bool DisplayExternalTitleOnMenuLabel = false;
-
     enum MenuLabels {
         Full,
         Short,
         IconOnly
     };
 
-    [Setting name="Menu Label Length" category="UI" if="!AdvancedAudioControlsSettings::DisplayExternalTitleOnMenuLabel"]
+    enum MenuLabelsMusicPlaying {
+        TitleOnly,
+        ArtistTitle,
+        IconOnly
+    };
+
+    [Setting name="Display external music title on menu label" category="UI" if="SMTCLib::g_isLibraryResponding"]
+    bool DisplayExternalTitleOnMenuLabel = false;
+
+    [Setting name="Menu Label Length when external music is playing" category="UI" if="AdvancedAudioControlsSettings::DisplayExternalTitleOnMenuLabel"]
+    MenuLabelsMusicPlaying MenuLabelMusicPlayingLength = MenuLabelsMusicPlaying::ArtistTitle;
+
+    [Setting name="Menu Label Length" category="UI"]
     MenuLabels MenuLabelLength = MenuLabels::Full;
 
-    [Setting name="Show Stop Button" category="UI" description="Stop button is disabled on live streams, despite the setting"]
+    [Setting name="Show Stop Button" category="UI" description="Stop button is disabled on live streams, despite the setting" if="SMTCLib::g_isLibraryResponding"]
     bool DisplayStopButton = true;
 
-    [Setting name="Show Rewind and Forward Buttons" category="UI" description="Some music players don't support seeking. Seeking is aslo disabled on live streams"]
+    [Setting name="Show Rewind and Forward Buttons" category="UI" description="Some music players don't support seeking. Seeking is aslo disabled on live streams" if="SMTCLib::g_isLibraryResponding"]
     bool DisplayForwardAndRewindButtons = false;
 
-    [Setting name="Show a notification when the music changes" category="UI" description="Show notification if the track title or the artist changes, else it won't show"]
+    [Setting name="Show a notification when the music changes" category="UI" description="Show notification if the track title or the artist changes, else it won't show" if="SMTCLib::g_isLibraryResponding"]
     bool DisplayNotificationOnMusicChange = true;
 
     [Setting hidden]

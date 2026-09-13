@@ -7,7 +7,19 @@ namespace AdvancedAudioControlsUI {
             SMTCLib::g_currentMedia !is null &&
             SMTCLib::g_currentMedia.playbackStatus != "Closed"
         ) {
-            menuLabel = Icons::Music + " " + SMTCLib::g_currentMedia.artist + " - " + SMTCLib::g_currentMedia.title;
+            string icon = Icons::Music;
+            if (SMTCLib::g_currentMedia.playbackStatus == "Paused") icon = Icons::Pause;
+            switch (AdvancedAudioControlsSettings::MenuLabelMusicPlayingLength) {
+                case AdvancedAudioControlsSettings::MenuLabelsMusicPlaying::TitleOnly:
+                    menuLabel = icon + " " + SMTCLib::g_currentMedia.title;
+                    break;
+                case AdvancedAudioControlsSettings::MenuLabelsMusicPlaying::ArtistTitle:
+                    menuLabel = icon + " " + SMTCLib::g_currentMedia.artist + " - " + SMTCLib::g_currentMedia.title;
+                    break;
+                case AdvancedAudioControlsSettings::MenuLabelsMusicPlaying::IconOnly:
+                    menuLabel = icon;
+                    break;
+            }
         } else {
             switch (AdvancedAudioControlsSettings::MenuLabelLength) {
                 case AdvancedAudioControlsSettings::MenuLabels::Short:
