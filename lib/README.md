@@ -1,67 +1,67 @@
 # AdvancedAudioControls.SMTC
 
-API .NET (C#) pour le module System Media Transport Controls (SMTC) de Windows, compilée en DLL native (NativeAOT) pour être appelée depuis Openplanet.
+.NET (C#) API for Windows System Media Transport Controls (SMTC), compiled to a native DLL (NativeAOT) to be called from Openplanet.
 
-## Prérequis
+## Prerequisites
 
 - .NET SDK 10+
-- Visual Studio Build Tools 2022 avec le workload **C++** (linker MSVC requis par NativeAOT)
+- Visual Studio Build Tools 2022 with the **C++** workload (MSVC linker required by NativeAOT)
 
 ## Build
 
 ```powershell
-# Compilation de la bibliothèque
+# Build the library
 dotnet build lib/AdvancedAudioControls.SMTC/AdvancedAudioControls.SMTC.csproj
 
-# Publication de la DLL native (NativeAOT)
+# Publish the native DLL (NativeAOT)
 dotnet publish lib/AdvancedAudioControls.SMTC/AdvancedAudioControls.SMTC.csproj -c Release -r win-x64 -f net10.0-windows10.0.19041.0
 ```
 
-La DLL native est générée dans :
+The native DLL is generated at:
 `lib/AdvancedAudioControls.SMTC/bin/Release/net10.0-windows10.0.19041.0/win-x64/publish/AdvancedAudioControls.SMTC.dll`
 
 ## Exports
 
-### Lecture (getters)
+### Playback (getters)
 
-| Symbole | Description |
+| Symbol | Description |
 | --- | --- |
-| `SMTC_Ping` | Retourne 1 si la DLL répond |
-| `SMTC_GetMetadataJson` | JSON de l'état SMTC complet (titre, artiste, position, durée, pochette...) |
-| `SMTC_HasMedia` | Retourne 1 si une musique est chargée, 0 sinon |
-| `SMTC_SetRefreshInterval(int intervalMs)` | Définit l'intervalle minimal (ms) entre deux rafraîchissements de la session globale (0 = à chaque appel) |
+| `SMTC_Ping` | Returns 1 if the DLL responds |
+| `SMTC_GetMetadataJson` | JSON of the complete SMTC state (title, artist, position, duration, artwork...) |
+| `SMTC_HasMedia` | Returns 1 if media is loaded, 0 otherwise |
+| `SMTC_SetRefreshInterval(int intervalMs)` | Sets the minimum interval (ms) between two refreshes of the global session (0 = refresh on every call) |
 
-### Contrôle (setters)
+### Control (setters)
 
-Toutes les fonctions de contrôle retournent 1 si l'action a réussi, 0 sinon.
+All control functions return 1 if the action succeeded, 0 otherwise.
 
-| Symbole | Description |
+| Symbol | Description |
 | --- | --- |
-| `SMTC_Play` | Lance la lecture |
-| `SMTC_Pause` | Met en pause |
-| `SMTC_TogglePlayPause` | Bascule lecture/pause |
-| `SMTC_Stop` | Arrête la lecture |
-| `SMTC_Next` | Piste suivante |
-| `SMTC_Previous` | Piste précédente |
-| `SMTC_FastForward` | Avance rapide |
-| `SMTC_Rewind` | Retour arrière |
-| `SMTC_ChangePlaybackRate(double rate)` | Change la vitesse de lecture |
-| `SMTC_ChangePlaybackPosition(long positionMs)` | Change la position de lecture (seek, en ms) |
+| `SMTC_Play` | Starts playback |
+| `SMTC_Pause` | Pauses playback |
+| `SMTC_TogglePlayPause` | Toggles play/pause |
+| `SMTC_Stop` | Stops playback |
+| `SMTC_Next` | Next track |
+| `SMTC_Previous` | Previous track |
+| `SMTC_FastForward` | Fast forward |
+| `SMTC_Rewind` | Rewind |
+| `SMTC_ChangePlaybackRate(double rate)` | Changes the playback rate |
+| `SMTC_ChangePlaybackPosition(long positionMs)` | Changes the playback position (seek, in ms) |
 
-## Format du JSON retourné par `SMTC_GetMetadataJson`
+## Format of the JSON returned by `SMTC_GetMetadataJson`
 
 ```json
 {
-  "title": "Titre du morceau",
-  "artist": "Artiste",
+  "title": "Track title",
+  "artist": "Artist",
   "album": "Album",
-  "albumArtist": "Artiste de l'album",
+  "albumArtist": "Album artist",
   "trackNumber": "1",
   "albumTrackCount": "12",
   "genres": "Rock,Pop",
   "thumbnailPath": "",
   "hasThumbnail": true,
-  "thumbnailBase64": "base64 de la pochette (128px max, PNG) ou null",
+  "thumbnailBase64": "artwork base64 (128px max, PNG) or null",
   "sourceAppId": "Spotify.exe",
   "playbackStatus": "Playing",
   "playbackType": "Music",
@@ -71,8 +71,8 @@ Toutes les fonctions de contrôle retournent 1 si l'action a réussi, 0 sinon.
 }
 ```
 
-Notes :
-- `thumbnailBase64` est `null` si aucune pochette n'est disponible.
-- `durationMs` est `null` pour un flux sans durée connue (ex. live).
-- `playbackStatus` : `Closed`, `Opened`, `Changing`, `Stopped`, `Playing`, `Paused`.
-- `playbackType` : `Unknown`, `Music`, `Video`, `Image`.
+Notes:
+- `thumbnailBase64` is `null` if no artwork is available.
+- `durationMs` is `null` for a stream with no known duration (e.g. live).
+- `playbackStatus`: `Closed`, `Opened`, `Changing`, `Stopped`, `Playing`, `Paused`.
+- `playbackType`: `Unknown`, `Music`, `Video`, `Image`.
