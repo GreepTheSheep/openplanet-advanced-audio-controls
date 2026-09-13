@@ -14,7 +14,7 @@ namespace AdvancedAudioControlsUI {
                     menuLabel = icon + " " + SMTCLib::g_currentMedia.title;
                     break;
                 case AdvancedAudioControlsSettings::MenuLabelsMusicPlaying::ArtistTitle:
-                    menuLabel = icon + " " + SMTCLib::g_currentMedia.artist + " - " + SMTCLib::g_currentMedia.title;
+                    menuLabel = icon + " " + (SMTCLib::g_currentMedia.artist.Length > 0 ? (SMTCLib::g_currentMedia.artist + " - ") : "") + SMTCLib::g_currentMedia.title;
                     break;
                 case AdvancedAudioControlsSettings::MenuLabelsMusicPlaying::IconOnly:
                     menuLabel = icon;
