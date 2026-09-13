@@ -52,7 +52,7 @@ void RenderGameSoundsSettingTab() {
         UI::Separator();
     }
 
-    UI::TextDisabled("Tip: Press Ctrl + click on a slider to adjust value.");
+    UI::TextDisabled("Tip: Press Ctrl + click on a slider to set a value precisely.");
 
     UI::AlignTextToFramePadding();
     AdvancedAudioControlsSettings::MusicPitch = UI::SliderFloat(Icons::Music + " Music Pitch###MenuMainMusicPitchSlider", AdvancedAudioControlsSettings::MusicPitch, 0.1, 5, "%.3f");
