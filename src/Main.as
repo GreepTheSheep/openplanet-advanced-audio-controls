@@ -10,6 +10,8 @@ bool IsUsingWindows() {
 }
 
 void Main() {
+    startnew(CoroutineFunc(Fonts::Load));
+
     if (!Game::m_patchAudioSourcesLoopRunning)
         startnew(CoroutineFunc(Game::PatchAudioSourcesAsyncLoop));
 

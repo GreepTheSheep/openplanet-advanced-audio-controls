@@ -12,6 +12,11 @@ namespace AdvancedAudioControlsUI {
                 width,
                 thumbSize.y / (thumbSize.x / width)
             ));
+        } else {
+            UI::PushFont(Fonts::ThumbnailIconPlaceholder);
+            UI::SetCursorPos(vec2(UI::GetCursorPos().x + 56, UI::GetCursorPos().y));
+            UI::TextDisabled(Text::FormatOpenplanetColor(AdvancedAudioControlsSettings::ThumbnailPlaceholderColor) + Icons::Music);
+            UI::PopFont();
         }
         UI::EndChild();
         UI::SetCursorPos(posTop + vec2(width + 8, 0));

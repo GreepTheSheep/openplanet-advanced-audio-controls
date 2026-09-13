@@ -21,6 +21,9 @@ namespace AdvancedAudioControlsSettings {
     [Setting name="Menu Label Length" category="UI"]
     MenuLabels MenuLabelLength = MenuLabels::Full;
 
+    [Setting color name="Media thumbnail placeholder icon color" category="UI" description="Displayed when no thumbnail are available" if="SMTCLib::g_isLibraryResponding"]
+    vec3 ThumbnailPlaceholderColor = vec3(0.43, 0.43, 0.43);
+
     [Setting name="Show Stop Button" category="UI" description="Stop button is disabled on live streams, despite the setting" if="SMTCLib::g_isLibraryResponding"]
     bool DisplayStopButton = true;
 
