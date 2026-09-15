@@ -1,5 +1,8 @@
 namespace AdvancedAudioControlsSettings {
 
+    [Setting name="Enable external media integration (SMTC)" category="UI" if="IsUsingWindows" onchange="ToggleSMTCIntegration"]
+    bool EnableSMTCIntegration = false;
+
     enum MenuLabels {
         Full,
         Short,
@@ -30,8 +33,11 @@ namespace AdvancedAudioControlsSettings {
     [Setting name="Show Rewind and Forward Buttons" category="UI" description="Some music players don't support seeking. Seeking is aslo disabled on live streams" if="SMTCLib::g_isLibraryResponding"]
     bool DisplayForwardAndRewindButtons = false;
 
-    [Setting name="Show a notification when the music changes" category="UI" description="Show notification if the track title or the artist changes, else it won't show" if="SMTCLib::g_isLibraryResponding"]
+    [Setting name="Show a notification when the external music changes" category="UI" description="Notification displays only if the track title or the artist changes." if="SMTCLib::g_isLibraryResponding"]
     bool DisplayNotificationOnMusicChange = true;
+
+    [Setting name="Display \"No external media playing.\"" category="UI" if="SMTCLib::g_isLibraryResponding"]
+    bool DisplayNoExternalMediaPlaying = true;
 
     [Setting hidden]
     bool MuteGameMusicOnMediaPlay = false;
@@ -70,6 +76,16 @@ namespace AdvancedAudioControlsSettings {
     float AmbianceVolumePercent = 100;
 }
 
+void ToggleSMTCIntegration() {
+    if (AdvancedAudioControlsSettings::EnableSMTCIntegration) {
+        startnew(CoroutineFunc(SMTCLib::LoadLibrary));
+    } else {
+        startnew(CoroutineFunc(SMTCLib::UnloadLibrary));
+        if (AdvancedAudioControlsSettings::DisplayExternalTitleOnMenuLabel)
+            AdvancedAudioControlsSettings::DisplayExternalTitleOnMenuLabel = false; // Reset this setting if we're disabling SMTC Integration
+    }
+}
+
 [SettingsTab name="Game" icon="VolumeUp"]
 void RenderGameSoundsSettingTab() {
     if (IsUsingWindows()) {
@@ -106,11 +122,7 @@ void RenderSMTCLibrarySettingTab() {
         else UI::Text(Icons::Check + " Loaded");
         if (SMTCLib::g_isLibraryResponding) {
             UI::SameLine();
-            UI::Text("Responds");
-        }
-
-        if (SMTCLib::g_smtcLib is null && UI::Button("Try to reload Library")) {
-            startnew(CoroutineFunc(Main));
+            UI::Text("+ Responds");
         }
 
         if (SMTCLib::HasMedia()) {
@@ -126,7 +138,7 @@ void RenderSMTCLibrarySettingTab() {
                 auto thumbnail = Images::CachedFromB64(SMTCLib::g_currentMedia.thumbnailBase64);
                 if (thumbnail !is null && thumbnail.m_texture !is null) UI::Image(thumbnail.m_texture);
             }
-        } else UI::Text("No media playing right now");
+        }
     } else UI::Text("Your current OS isn't Windows.");
 }
 

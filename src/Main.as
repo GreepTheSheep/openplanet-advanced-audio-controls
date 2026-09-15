@@ -15,41 +15,39 @@ void Main() {
     if (!Game::m_patchAudioSourcesLoopRunning)
         startnew(CoroutineFunc(Game::PatchAudioSourcesAsyncLoop));
 
-    if (!IsUsingWindows()) {
-        UI::ShowNotification(
-            Icons::Kenney::ExclamationCircle + " " + PLUGIN_NAME + " - Warning",
-            "You are not using Windows right now. External media controls are not possible.",
-            UI::HSV(0.11, 1.0, 1.0), 20000
-        );
-        return;
-    } else {
-        SMTCLib::LoadLibrary();
-
-        if (SMTCLib::Ping()) {
-            trace("SMTC library loaded and responding");
-            SMTCLib::g_isLibraryResponding = true;
-            startnew(CoroutineFunc(SMTCLib::FetchCurrentMediaAsyncLoop));
-        } else {
-            warn("SMTC library failed to respond");
-        }
-    }
+    if (AdvancedAudioControlsSettings::EnableSMTCIntegration) SMTCLib::LoadLibrary();
 }
 
 void RenderMenuMain()
 {
     if (UI::BeginMenu(AdvancedAudioControlsUI::OutputMenuLabel() + "###AdvancedAudioControlsMenu")) {
         if (IsUsingWindows()) {
-            if (SMTCLib::g_currentMedia !is null && SMTCLib::g_currentMedia.playbackStatus != "Closed") {
-                AdvancedAudioControlsUI::RenderSMTCControlsMenuMain();
+            if (!AdvancedAudioControlsSettings::EnableSMTCIntegration) {
+                UI::AlignTextToFramePadding();
+                UI::Text(Icons::Music + " External media integration is disabled.");
+                UI::SameLine();
+                if (UI::Button("Enable")) {
+                    AdvancedAudioControlsSettings::EnableSMTCIntegration = true;
+                    startnew(CoroutineFunc(SMTCLib::LoadLibrary));
+                }
+                UI::TextDisabled("You can toggle this option in the plugin settings.");
+                UI::Separator();
             } else {
-                UI::TextDisabled("No external media playing");
+                if (SMTCLib::g_currentMedia !is null && SMTCLib::g_currentMedia.playbackStatus != "Closed") {
+                    AdvancedAudioControlsUI::RenderSMTCControlsMenuMain();
+                    UI::Separator();
+                } else {
+                    if (AdvancedAudioControlsSettings::DisplayNoExternalMediaPlaying) {
+                        UI::TextDisabled("No external media playing.");
+                        UI::Separator();
+                    }
+                }
             }
-            UI::Separator();
         }
 
         AdvancedAudioControlsUI::RenderVolumeOptionsMenuMain();
 
-        if (IsUsingWindows()) {
+        if (IsUsingWindows() && AdvancedAudioControlsSettings::EnableSMTCIntegration) {
             UI::Separator();
             AdvancedAudioControlsSettings::MuteGameMusicOnMediaPlay = UI::Checkbox("Mute game music while external media is playing", AdvancedAudioControlsSettings::MuteGameMusicOnMediaPlay);
         }

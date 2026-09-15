@@ -5,11 +5,39 @@ namespace SMTCLib {
     string cachedArtistTitle;
 
     void LoadLibrary() {
+        if (!IsUsingWindows()) {
+            UI::ShowNotification(
+                Icons::Kenney::ExclamationCircle + " " + PLUGIN_NAME + " - Warning",
+                "You are not using Windows right now. External media controls are not possible.",
+                UI::HSV(0.11, 1.0, 1.0), 20000
+            );
+            return;
+        }
         try {
             if (g_smtcLib is null)
                 @g_smtcLib = Import::GetZippedLibrary("lib/AdvancedAudioControls.SMTC.dll");
+
+            if (Ping()) {
+                trace("SMTC library loaded and responding");
+                g_isLibraryResponding = true;
+                startnew(CoroutineFunc(FetchCurrentMediaAsyncLoop));
+            } else {
+                warn("SMTC library failed to respond");
+            }
         } catch {
             error("Error while loading SMTC Library: " + getExceptionInfo());
+        }
+    }
+
+    void UnloadLibrary() {
+        try {
+            if (g_smtcLib !is null) {
+                @g_smtcLib = null;
+                @g_currentMedia = null;
+                g_isLibraryResponding = false;
+            }
+        } catch {
+            error("Error while unloading SMTC Library: " + getExceptionInfo());
         }
     }
 
@@ -103,16 +131,14 @@ namespace SMTCLib {
 }
 
 namespace Import {
-    Library@ GetZippedLibrary(const string &in relativeDllPath, const bool &in preventCache = true) {
+    Library@ GetZippedLibrary(const string &in relativeDllPath, const bool &in preventCache = false) {
         auto parts = relativeDllPath.Split("/");
         string fileName = parts[parts.Length - 1];
         const string baseFolder = IO::FromDataFolder('');
         const string dllFolder = baseFolder + 'lib/';
         const string localDllFile = dllFolder + fileName;
 
-        if(!IO::FolderExists(dllFolder)) {
-            IO::CreateFolder(dllFolder);
-        }
+        if(!IO::FolderExists(dllFolder)) IO::CreateFolder(dllFolder);
 
         if(preventCache || !IO::FileExists(localDllFile)) {
             try {
