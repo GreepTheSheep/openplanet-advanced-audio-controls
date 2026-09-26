@@ -9,9 +9,7 @@
     <RootNamespace>AdvancedAudioControls.SMTC</RootNamespace>
     <AssemblyName>AdvancedAudioControls.SMTC</AssemblyName>
     <Description>API .NET pour le module System Media Transport Controls (SMTC) de Windows.</Description>
-  </PropertyGroup>
-
-  <PropertyGroup>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
     <PublishAot>true</PublishAot>
     <NativeLib>Shared</NativeLib>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
