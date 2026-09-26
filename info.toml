@@ -4,7 +4,7 @@ author = "Greep"
 category = "Audio"
 siteid = 947
 
-version = "0.2"
+version = "0.3"
 
 [script]
 module = "AdvancedAudioControls"
