@@ -30,6 +30,7 @@ void RenderMenuMain()
                     AdvancedAudioControlsSettings::EnableSMTCIntegration = true;
                     startnew(CoroutineFunc(SMTCLib::LoadLibrary));
                 }
+                UI::TextWrapped("\\$888This will load an external native library into the game that will allow it to retrieve Windows SMTC information.");
                 UI::TextDisabled("You can toggle this option in the plugin settings.");
                 UI::Separator();
             } else {
