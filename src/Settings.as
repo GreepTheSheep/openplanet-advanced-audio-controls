@@ -42,11 +42,14 @@ namespace AdvancedAudioControlsSettings {
     [Setting name="Display \"No external media playing.\"" category="UI" if="SMTCLib::g_isLibraryResponding"]
     bool DisplayNoExternalMediaPlaying = true;
 
-    [Setting name="Media Info Width" category="UI" min="50" max="500"]
+    [Setting name="Media Info Width" category="UI" min="50" max="500" if="SMTCLib::g_isLibraryResponding"]
     int MediaInfoWidth = 200;
 
     [Setting hidden]
     bool MuteGameMusicOnMediaPlay = false;
+
+    [Setting hidden]
+    bool EnableGameVolumeSettings = true;
 
     [Setting hidden]
     float MusicVolumePercent = 100;
@@ -94,27 +97,55 @@ void ToggleSMTCIntegration() {
 
 [SettingsTab name="Game" icon="VolumeUp"]
 void RenderGameSoundsSettingTab() {
-    if (IsUsingWindows()) {
-        AdvancedAudioControlsSettings::MuteGameMusicOnMediaPlay = UI::Checkbox("Mute game music while external media is playing", AdvancedAudioControlsSettings::MuteGameMusicOnMediaPlay);
-        if (AdvancedAudioControlsSettings::MuteGameMusicOnMediaPlay) {
-            if (SMTCLib::g_currentMedia !is null && SMTCLib::g_currentMedia.playbackStatus == "Playing")
-                UI::TextDisabled("External media is playing; game music is muted.");
-            else
-                UI::TextDisabled("No external media is currently playing.");
-        }
-        UI::Separator();
-    }
-
-    UI::TextDisabled("Tip: Press Ctrl + click on a slider to set a value precisely.");
-
     UI::AlignTextToFramePadding();
-    AdvancedAudioControlsSettings::MusicPitch = UI::SliderFloat(Icons::Music + " Music Pitch###MenuMainMusicPitchSlider", AdvancedAudioControlsSettings::MusicPitch, 0.1, 5, "%.3f");
-    if (AdvancedAudioControlsSettings::MusicPitch != 1) {
-        UI::SameLine();
-        if (UI::Button("Reset###ResetMusicPitch")) AdvancedAudioControlsSettings::MusicPitch = 1;
+    bool gameVolumeSettingsChanged = UI::Checkbox("Enable Advanced Game Volume Settings", AdvancedAudioControlsSettings::EnableGameVolumeSettings);
+    UI::SameLine();
+    UI::TextDisabled(Icons::InfoCircle);
+    UI::SetItemTooltip("This setting may affect game performance due to a large number of audio sources");
+
+    if (gameVolumeSettingsChanged && !AdvancedAudioControlsSettings::EnableGameVolumeSettings) {
+        AdvancedAudioControlsSettings::EnableGameVolumeSettings = true;
+        startnew(CoroutineFunc(Game::PatchAudioSourcesAsyncLoop));
+    } else if (!gameVolumeSettingsChanged && AdvancedAudioControlsSettings::EnableGameVolumeSettings) {
+        AdvancedAudioControlsSettings::EnableGameVolumeSettings = false;
+        AdvancedAudioControlsSettings::MusicVolumePercent = 100;
+        AdvancedAudioControlsSettings::MusicPitch = 1;
+        AdvancedAudioControlsSettings::MenuUIVolumePercent = 100;
+        AdvancedAudioControlsSettings::GameUIVolumePercent = 100;
+        AdvancedAudioControlsSettings::EngineVolumePercent = 100;
+        AdvancedAudioControlsSettings::CollisionVolumePercent = 100;
+        AdvancedAudioControlsSettings::WheelsVolumePercent = 100;
+        AdvancedAudioControlsSettings::BrakeVolumePercent = 100;
+        AdvancedAudioControlsSettings::ModifierBlocksVolumePercent = 100;
+        AdvancedAudioControlsSettings::GearVolumePercent = 100;
+        AdvancedAudioControlsSettings::AmbianceVolumePercent = 100;
     }
 
-    AdvancedAudioControlsUI::RenderVolumeOptionsMenuMain(false);
+    if (AdvancedAudioControlsSettings::EnableGameVolumeSettings) {
+        UI::Separator();
+
+        if (IsUsingWindows()) {
+            AdvancedAudioControlsSettings::MuteGameMusicOnMediaPlay = UI::Checkbox("Mute game music while external media is playing", AdvancedAudioControlsSettings::MuteGameMusicOnMediaPlay);
+            if (AdvancedAudioControlsSettings::MuteGameMusicOnMediaPlay) {
+                if (SMTCLib::g_currentMedia !is null && SMTCLib::g_currentMedia.playbackStatus == "Playing")
+                    UI::TextDisabled("External media is playing; game music is muted.");
+                else
+                    UI::TextDisabled("No external media is currently playing.");
+            }
+            UI::Separator();
+        }
+
+        UI::TextDisabled("Tip: Press Ctrl + click on a slider to set a value precisely.");
+
+        UI::AlignTextToFramePadding();
+        AdvancedAudioControlsSettings::MusicPitch = UI::SliderFloat(Icons::Music + " Music Pitch###MenuMainMusicPitchSlider", AdvancedAudioControlsSettings::MusicPitch, 0.1, 5, "%.3f");
+        if (AdvancedAudioControlsSettings::MusicPitch != 1) {
+            UI::SameLine();
+            if (UI::Button("Reset###ResetMusicPitch")) AdvancedAudioControlsSettings::MusicPitch = 1;
+        }
+
+        AdvancedAudioControlsUI::RenderVolumeOptionsMenuMain(false);
+    }
 }
 
 #if SIG_DEVELOPER
