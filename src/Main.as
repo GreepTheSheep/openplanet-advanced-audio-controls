@@ -18,6 +18,15 @@ void Main() {
     if (AdvancedAudioControlsSettings::EnableSMTCIntegration) SMTCLib::LoadLibrary();
 }
 
+void Render() {
+    if (!IsUsingWindows()) return;
+    if (!AdvancedAudioControlsSettings::DisplayControlWindow) return;
+    if (!AdvancedAudioControlsSettings::EnableSMTCIntegration) return;
+    if (!SMTCLib::g_isLibraryResponding) return;
+    if (SMTCLib::g_currentMedia is null || SMTCLib::g_currentMedia.playbackStatus == "Closed") return;
+    AdvancedAudioControlsWindow::Render();
+}
+
 void RenderMenuMain()
 {
     if (UI::BeginMenu(AdvancedAudioControlsUI::OutputMenuLabel() + "###AdvancedAudioControlsMenu")) {
