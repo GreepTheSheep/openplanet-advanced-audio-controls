@@ -24,6 +24,9 @@ namespace AdvancedAudioControlsSettings {
     [Setting name="Menu Label Length" category="UI"]
     MenuLabels MenuLabelLength = MenuLabels::Full;
 
+    [Setting name="Display control window" category="UI" if="SMTCLib::g_isLibraryResponding" description="The window is hidden if no external media is playing"]
+    bool DisplayControlWindow = false;
+
     [Setting color name="Media thumbnail placeholder icon color" category="UI" description="Displayed when no thumbnail are available" if="SMTCLib::g_isLibraryResponding"]
     vec3 ThumbnailPlaceholderColor = vec3(0.43, 0.43, 0.43);
 
@@ -38,6 +41,9 @@ namespace AdvancedAudioControlsSettings {
 
     [Setting name="Display \"No external media playing.\"" category="UI" if="SMTCLib::g_isLibraryResponding"]
     bool DisplayNoExternalMediaPlaying = true;
+
+    [Setting name="Media Info Width" category="UI" min="50" max="500"]
+    int MediaInfoWidth = 200;
 
     [Setting hidden]
     bool MuteGameMusicOnMediaPlay = false;

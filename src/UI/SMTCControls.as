@@ -21,7 +21,16 @@ namespace AdvancedAudioControlsUI {
         UI::EndChild();
         UI::SetCursorPos(posTop + vec2(width + 8, 0));
 
-        UI::BeginChild("AdvancedAudioControlsMenuMainMetadata", vec2(width + 120, height));
+        if (!AdvancedAudioControlsSettings::DisplayControlWindow) {
+            vec2 posOrig = UI::GetCursorPos();
+            UI::SetCursorPos(vec2(width + AdvancedAudioControlsSettings::MediaInfoWidth + UI::MeasureString(Icons::ExternalLink).x + 135, posOrig.y));
+            UI::Text(Icons::ExternalLink);
+            UI::SetItemTooltip("Display controls in a window");
+            if (UI::IsItemClicked()) AdvancedAudioControlsSettings::DisplayControlWindow = true;
+            UI::SetCursorPos(posOrig);
+        }
+
+        UI::BeginChild("AdvancedAudioControlsMenuMainMetadata", vec2(width + AdvancedAudioControlsSettings::MediaInfoWidth, height));
 
         const float pauseMs = 1000;
         const float gap = 32;
