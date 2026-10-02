@@ -183,6 +183,10 @@ bool AudioSourcesDebugSettingTab_FilterPlaying = true;
 
 [SettingsTab name="Audio Sources Debug" icon="Code"]
 void RenderAudioSourcesDebugSettingTab() {
+    if (!AdvancedAudioControlsSettings::EnableGameVolumeSettings) {
+        UI::TextWrapped("Please enable the game's advanced volume settings in the \"Game\" tab to access this debug tab.");
+        return;
+    }
     auto sources = GetApp().AudioPort.Sources;
     UI::Text("Sources loaded: " + sources.Length);
     UI::Text("Sources playing: " + Game::m_AudioSourcesPlayingTotal);
