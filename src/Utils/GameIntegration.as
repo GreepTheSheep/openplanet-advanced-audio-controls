@@ -8,7 +8,7 @@ namespace Game {
 
     void PatchAudioSourcesAsyncLoop() {
         m_patchAudioSourcesLoopRunning = true;
-        while(m_patchAudioSourcesLoopRunning) {
+        while(m_patchAudioSourcesLoopRunning && AdvancedAudioControlsSettings::EnableGameVolumeSettings) {
             yield();
 #if SIG_DEVELOPER
             // Arrays and properties used to filter for the Debug tab
