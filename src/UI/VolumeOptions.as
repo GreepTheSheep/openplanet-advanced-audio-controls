@@ -1,35 +1,35 @@
 namespace AdvancedAudioControlsUI {
     void RenderVolumeOptionsMenuMain(const bool &in displayMoreTreeNode = true) {
         UI::AlignTextToFramePadding();
-        AdvancedAudioControlsSettings::MusicVolumePercent = UI::SliderFloat((AdvancedAudioControlsSettings::MusicVolumePercent == 0 ? Icons::Kenney::MusicOff : Icons::Kenney::MusicOn) + " Music###MenuMainMusicVolumePercentSlider", AdvancedAudioControlsSettings::MusicVolumePercent, 0, 200, "%.1f %%");
+        AdvancedAudioControlsSettings::MusicVolumePercent = UI::SliderFloat((AdvancedAudioControlsSettings::MusicVolumePercent == 0 ? Icons::Kenney::MusicOff : Icons::Kenney::MusicOn) + " Music###MenuMainMusicVolumePercentSlider", AdvancedAudioControlsSettings::MusicVolumePercent, 0, 100, "%.1f %%", UI::SliderFlags::NoInput);
         if (AdvancedAudioControlsSettings::MusicVolumePercent != 100) {
             UI::SameLine();
             if (UI::Button("Reset###ResetMusicVolumePercent")) AdvancedAudioControlsSettings::MusicVolumePercent = 100;
         }
 
         UI::AlignTextToFramePadding();
-        AdvancedAudioControlsSettings::EngineVolumePercent = UI::SliderFloat(Icons::Kenney::Car + " Car & Ghosts Engine###MenuMainEngineVolumePercentSlider", AdvancedAudioControlsSettings::EngineVolumePercent, 0, 200, "%.1f %%");
+        AdvancedAudioControlsSettings::EngineVolumePercent = UI::SliderFloat(Icons::Kenney::Car + " Car & Ghosts Engine###MenuMainEngineVolumePercentSlider", AdvancedAudioControlsSettings::EngineVolumePercent, 0, 100, "%.1f %%", UI::SliderFlags::NoInput);
         if (AdvancedAudioControlsSettings::EngineVolumePercent != 100) {
             UI::SameLine();
             if (UI::Button("Reset###ResetEngineVolumePercent")) AdvancedAudioControlsSettings::EngineVolumePercent = 100;
         }
 
         UI::AlignTextToFramePadding();
-        AdvancedAudioControlsSettings::WheelsVolumePercent = UI::SliderFloat(Icons::CircleONotch + " Wheels###MenuMainWheelsVolumePercentSlider", AdvancedAudioControlsSettings::WheelsVolumePercent, 0, 200, "%.1f %%");
+        AdvancedAudioControlsSettings::WheelsVolumePercent = UI::SliderFloat(Icons::CircleONotch + " Wheels###MenuMainWheelsVolumePercentSlider", AdvancedAudioControlsSettings::WheelsVolumePercent, 0, 100, "%.1f %%", UI::SliderFlags::NoInput);
         if (AdvancedAudioControlsSettings::WheelsVolumePercent != 100) {
             UI::SameLine();
             if (UI::Button("Reset###ResetWheelsVolumePercent")) AdvancedAudioControlsSettings::WheelsVolumePercent = 100;
         }
 
         UI::AlignTextToFramePadding();
-        AdvancedAudioControlsSettings::ModifierBlocksVolumePercent = UI::SliderFloat(Icons::AngleDoubleUp + " Modifier Blocks (Turbo, Reactor...)###MenuMainModifierBlocksVolumePercentSlider", AdvancedAudioControlsSettings::ModifierBlocksVolumePercent, 0, 200, "%.1f %%");
+        AdvancedAudioControlsSettings::ModifierBlocksVolumePercent = UI::SliderFloat(Icons::AngleDoubleUp + " Modifier Blocks (Turbo, Reactor...)###MenuMainModifierBlocksVolumePercentSlider", AdvancedAudioControlsSettings::ModifierBlocksVolumePercent, 0, 100, "%.1f %%", UI::SliderFlags::NoInput);
         if (AdvancedAudioControlsSettings::ModifierBlocksVolumePercent != 100) {
             UI::SameLine();
             if (UI::Button("Reset###ResetModifierBlocksVolumePercent")) AdvancedAudioControlsSettings::ModifierBlocksVolumePercent = 100;
         }
 
         UI::AlignTextToFramePadding();
-        AdvancedAudioControlsSettings::BrakeVolumePercent = UI::SliderFloat(Icons::Kenney::Car + " Brake###MenuMainBrakeVolumePercentSlider", AdvancedAudioControlsSettings::BrakeVolumePercent, 0, 200, "%.1f %%");
+        AdvancedAudioControlsSettings::BrakeVolumePercent = UI::SliderFloat(Icons::Kenney::Car + " Brake###MenuMainBrakeVolumePercentSlider", AdvancedAudioControlsSettings::BrakeVolumePercent, 0, 100, "%.1f %%", UI::SliderFlags::NoInput);
         if (AdvancedAudioControlsSettings::BrakeVolumePercent != 100) {
             UI::SameLine();
             if (UI::Button("Reset###ResetBrakeVolumePercent")) AdvancedAudioControlsSettings::BrakeVolumePercent = 100;
@@ -45,28 +45,28 @@ namespace AdvancedAudioControlsUI {
 
     void RenderMoreVolumeOptionsMenuMain() {
         UI::AlignTextToFramePadding();
-        AdvancedAudioControlsSettings::MenuUIVolumePercent = UI::SliderFloat((AdvancedAudioControlsSettings::MenuUIVolumePercent == 0 ? Icons::Kenney::SoundOff : Icons::Kenney::SoundOn) + " Menu UI###MenuMainMenuUIVolumePercentSlider", AdvancedAudioControlsSettings::MenuUIVolumePercent, 0, 200, "%.1f %%");
+        AdvancedAudioControlsSettings::MenuUIVolumePercent = UI::SliderFloat((AdvancedAudioControlsSettings::MenuUIVolumePercent == 0 ? Icons::Kenney::SoundOff : Icons::Kenney::SoundOn) + " Menu UI###MenuMainMenuUIVolumePercentSlider", AdvancedAudioControlsSettings::MenuUIVolumePercent, 0, 100, "%.1f %%", UI::SliderFlags::NoInput);
         if (AdvancedAudioControlsSettings::MenuUIVolumePercent != 100) {
             UI::SameLine();
             if (UI::Button("Reset###ResetMenuUIVolumePercent")) AdvancedAudioControlsSettings::MenuUIVolumePercent = 100;
         }
 
         UI::AlignTextToFramePadding();
-        AdvancedAudioControlsSettings::GameUIVolumePercent = UI::SliderFloat((AdvancedAudioControlsSettings::GameUIVolumePercent == 0 ? Icons::Kenney::SoundOff : Icons::Kenney::SoundOn) + " Game UI###MenuMainGameUIVolumePercentSlider", AdvancedAudioControlsSettings::GameUIVolumePercent, 0, 200, "%.1f %%");
+        AdvancedAudioControlsSettings::GameUIVolumePercent = UI::SliderFloat((AdvancedAudioControlsSettings::GameUIVolumePercent == 0 ? Icons::Kenney::SoundOff : Icons::Kenney::SoundOn) + " Game UI###MenuMainGameUIVolumePercentSlider", AdvancedAudioControlsSettings::GameUIVolumePercent, 0, 100, "%.1f %%", UI::SliderFlags::NoInput);
         if (AdvancedAudioControlsSettings::GameUIVolumePercent != 100) {
             UI::SameLine();
             if (UI::Button("Reset###ResetGameUIVolumePercent")) AdvancedAudioControlsSettings::GameUIVolumePercent = 100;
         }
 
         UI::AlignTextToFramePadding();
-        AdvancedAudioControlsSettings::CollisionVolumePercent = UI::SliderFloat(Icons::ChainBroken + " Collisions###MenuMainCollisionVolumePercentSlider", AdvancedAudioControlsSettings::CollisionVolumePercent, 0, 200, "%.1f %%");
+        AdvancedAudioControlsSettings::CollisionVolumePercent = UI::SliderFloat(Icons::ChainBroken + " Collisions###MenuMainCollisionVolumePercentSlider", AdvancedAudioControlsSettings::CollisionVolumePercent, 0, 100, "%.1f %%", UI::SliderFlags::NoInput);
         if (AdvancedAudioControlsSettings::CollisionVolumePercent != 100) {
             UI::SameLine();
             if (UI::Button("Reset###ResetCollisionVolumePercent")) AdvancedAudioControlsSettings::CollisionVolumePercent = 100;
         }
 
         UI::AlignTextToFramePadding();
-        AdvancedAudioControlsSettings::AmbianceVolumePercent = UI::SliderFloat(Icons::Kenney::Cloud + " Ambiance & Wind###MenuMainAmbianceVolumePercentSlider", AdvancedAudioControlsSettings::AmbianceVolumePercent, 0, 200, "%.1f %%");
+        AdvancedAudioControlsSettings::AmbianceVolumePercent = UI::SliderFloat(Icons::Kenney::Cloud + " Ambiance & Wind###MenuMainAmbianceVolumePercentSlider", AdvancedAudioControlsSettings::AmbianceVolumePercent, 0, 100, "%.1f %%", UI::SliderFlags::NoInput);
         if (AdvancedAudioControlsSettings::AmbianceVolumePercent != 100) {
             UI::SameLine();
             if (UI::Button("Reset###ResetAmbianceVolumePercent")) AdvancedAudioControlsSettings::AmbianceVolumePercent = 100;
