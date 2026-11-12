@@ -10,6 +10,18 @@ namespace Game {
         m_patchAudioSourcesLoopRunning = true;
         while(m_patchAudioSourcesLoopRunning && AdvancedAudioControlsSettings::EnableGameVolumeSettings) {
             yield();
+
+            // Force all channels to 100% maximum if they are superior
+            if (AdvancedAudioControlsSettings::MusicVolumePercent > 100) AdvancedAudioControlsSettings::MusicVolumePercent = 100;
+            if (AdvancedAudioControlsSettings::MenuUIVolumePercent > 100) AdvancedAudioControlsSettings::MenuUIVolumePercent = 100;
+            if (AdvancedAudioControlsSettings::GameUIVolumePercent > 100) AdvancedAudioControlsSettings::GameUIVolumePercent = 100;
+            if (AdvancedAudioControlsSettings::EngineVolumePercent > 100) AdvancedAudioControlsSettings::EngineVolumePercent = 100;
+            if (AdvancedAudioControlsSettings::CollisionVolumePercent > 100) AdvancedAudioControlsSettings::CollisionVolumePercent = 100;
+            if (AdvancedAudioControlsSettings::WheelsVolumePercent > 100) AdvancedAudioControlsSettings::WheelsVolumePercent = 100;
+            if (AdvancedAudioControlsSettings::BrakeVolumePercent > 100) AdvancedAudioControlsSettings::BrakeVolumePercent = 100;
+            if (AdvancedAudioControlsSettings::ModifierBlocksVolumePercent > 100) AdvancedAudioControlsSettings::ModifierBlocksVolumePercent = 100;
+            if (AdvancedAudioControlsSettings::AmbianceVolumePercent > 100) AdvancedAudioControlsSettings::AmbianceVolumePercent = 100;
+
 #if SIG_DEVELOPER
             // Arrays and properties used to filter for the Debug tab
             // Filtering the properties of sound sources is very resource-intensive;
