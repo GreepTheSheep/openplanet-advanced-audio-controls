@@ -66,13 +66,6 @@ namespace AdvancedAudioControlsUI {
         }
 
         UI::AlignTextToFramePadding();
-        AdvancedAudioControlsSettings::GearVolumePercent = UI::SliderFloat(Icons::Kenney::Cog + " Car Gears clicks###MenuMainGearVolumePercentSlider", AdvancedAudioControlsSettings::GearVolumePercent, 0, 200, "%.1f %%");
-        if (AdvancedAudioControlsSettings::GearVolumePercent != 100) {
-            UI::SameLine();
-            if (UI::Button("Reset###ResetGearVolumePercent")) AdvancedAudioControlsSettings::GearVolumePercent = 100;
-        }
-
-        UI::AlignTextToFramePadding();
         AdvancedAudioControlsSettings::AmbianceVolumePercent = UI::SliderFloat(Icons::Kenney::Cloud + " Ambiance & Wind###MenuMainAmbianceVolumePercentSlider", AdvancedAudioControlsSettings::AmbianceVolumePercent, 0, 200, "%.1f %%");
         if (AdvancedAudioControlsSettings::AmbianceVolumePercent != 100) {
             UI::SameLine();

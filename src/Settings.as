@@ -79,9 +79,6 @@ namespace AdvancedAudioControlsSettings {
     float ModifierBlocksVolumePercent = 100;
 
     [Setting hidden]
-    float GearVolumePercent = 100;
-
-    [Setting hidden]
     float AmbianceVolumePercent = 100;
 }
 
@@ -117,7 +114,6 @@ void RenderGameSoundsSettingTab() {
         AdvancedAudioControlsSettings::WheelsVolumePercent = 100;
         AdvancedAudioControlsSettings::BrakeVolumePercent = 100;
         AdvancedAudioControlsSettings::ModifierBlocksVolumePercent = 100;
-        AdvancedAudioControlsSettings::GearVolumePercent = 100;
         AdvancedAudioControlsSettings::AmbianceVolumePercent = 100;
     }
 

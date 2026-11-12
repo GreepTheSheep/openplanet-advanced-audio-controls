@@ -173,9 +173,7 @@ namespace Game {
                         } else {
                             // Unassigned sounds = mostly sounds from file
 
-                            if (fileName == "GearChange1.wav") {
-                                source.PlugSound.VolumedB = CalculateNewDb(-10.45, AdvancedAudioControlsSettings::GearVolumePercent);
-                            } else if (fileName == "SpecialBoost_Loop.wav" || fileName == "SpecialBoost_Loop_2.wav") {
+                            if (fileName == "SpecialBoost_Loop.wav" || fileName == "SpecialBoost_Loop_2.wav") {
                                 source.PlugSound.VolumedB = CalculateNewDb(-6.01, AdvancedAudioControlsSettings::ModifierBlocksVolumePercent);
                             } else if (fileName == "Block_Fragile_01.wav") {
                                 source.PlugSound.VolumedB = CalculateNewDb(-6.01, AdvancedAudioControlsSettings::ModifierBlocksVolumePercent);
